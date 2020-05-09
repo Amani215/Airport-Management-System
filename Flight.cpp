@@ -3,6 +3,9 @@
 #include "Flight.h"
 
 using namespace std;
+    //*************************************
+    //CONSTRUCTORS & DESTRUCTORS
+    //*************************************
 
     //Default constructor
     Flight::Flight(){
@@ -47,9 +50,19 @@ using namespace std;
         crew= nullptr;
     }
     
+    Flight::Flight(int id, string filename){
+        //open file
+        //search for the id
+        //get the attributes an assign them
+    }
+
     //Destructor
     Flight::~Flight(){}
     
+    //*************************************
+    //FUNCTIONS FOR CHANGING DATA
+    //*************************************
+
     //fills the table of the crew with names of the members
     void Flight::fillTheCrew(){
         crew=new string[sizeOfTheCrew];
@@ -59,7 +72,11 @@ using namespace std;
             cin>>crew[i];
         }
     }
-    
+
+    //*************************************
+    //FUNCTIONS FOR SHOWING DATA
+    //*************************************
+
     //shows the data of the flight
     void Flight::showFlightData() const{
         cout<<"Flight Number: "<<flightNum<<endl;

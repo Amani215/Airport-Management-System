@@ -3,6 +3,10 @@
 #include "Person.h"
 
 using namespace std;
+ 
+//*****************************************
+//CONSTRUCTORS & DESTRUCTORS
+//*****************************************
 
 //Constructor
 Person::Person(Airport airport){
@@ -23,32 +27,18 @@ Person::Person(Airport airport){
     }
 }
 
+Person::Person(int id,string filename){
+    //open file
+    //search for id
+    //get the attributes
+}
+
 //Destructor
 Person::~Person(){}
 
-//print the data of the Person
-// virtual void print()const =0;//a person has to be a passenger or a pilot (pure virtual)
-
-//returns true if the person doesn't exist in the database
-bool Person::newPerson(Airport airport) const{
-    //open file (airport.filename) for reading
-    //search for passport in the file
-    //return true if passport is not found
-    //return false if passport is found
-}
-
-//returns a new id that doesn't exist in the database
-int Person::getID(Airport airport) {
-    //open file and return the number of the new line
-    return 1;
-}//should be virtual too so that passenger gets id with p and employee with e at the beginning
-
-//returns the Person with the id from the airport
-void Person::getPerson(Airport airport,int id){
-    //open file for reading
-    //search for person with id
-    //create new person and give it the properties
-}
+//*****************************************
+//FUNCTIONS FOR SHOWING DATA
+//*****************************************
 
 //change the data
 void Person::changeData(){
@@ -71,4 +61,29 @@ void Person::changeData(){
     cout<<"Passport: ";
     cin>>input;
     if(input!="0") passport=input;
+}
+
+//*****************************************
+//OTHER FUNCTIONS
+//*****************************************
+
+//returns true if the person doesn't exist in the database
+bool Person::newPerson(Airport airport) const{
+    //open file (airport.filename) for reading
+    //search for passport in the file
+    //return true if passport is not found
+    //return false if passport is found
+}
+
+//returns a new id that doesn't exist in the database
+int Person::getID(Airport airport) {
+    //open file and return the number of the new line
+    return 1;
+}
+
+//returns the Person with the id from the airport
+void Person::getPerson(Airport airport,int id){
+    //open file for reading
+    //search for person with id
+    //create new person and give it the properties
 }

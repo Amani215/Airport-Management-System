@@ -16,24 +16,27 @@ class Flight{
     string* crew;           //table of the names of the crew 
     int sizeOfTheCrew;      //number of people in the crew
   public:
+    //CONSTRUCTORS & DESTRUCTORS
+
     //Default constructor
     Flight();
-    
+    Flight(int id, string filename);
     //Destructor
-    ~Flight();
+    ~Flight(){}
     
+    //FUNCTIONS FOR CHANGING THE DATA
+
     //fills the table of the crew with names of the members
     void fillTheCrew();
     
+    //FUNCTIONS FOR SHOWING THE DATA
+
     //shows the data of the flight
     void showFlightData() const;
-    
     //Shows the date of taking off
     void showDate() const;
-    
     //Shows the time of taking off
     void showTime() const;
-    
     //Shows the list of the Crew
     void showCrew() const;
 };

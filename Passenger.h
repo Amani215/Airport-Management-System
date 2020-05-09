@@ -10,24 +10,21 @@ class Passenger:public Person{
     string flightNum;   //id of the booked flight (or 0 if there's no flight booked)
     string flightSeat;  //number of booked seat (or 0 if there's no seat booked)
   public:
+    //CONSTRUCTORS & DESTRUCTORS
+
     //Constructor
-    Passenger(Airport airport);
-    
+    Passenger(Airport airport);   
+    Passenger(int id, string filename);
     //Destructor
     ~Passenger();
     
+    //MENU AND ITS FUNCTIONS
+
     //the passengers only get options for general information about the airport and their flights
-    void menu(Airport airport)const; 
-    
+    void menu(Airport airport)const;   
     //prints the data of the Passenger
     virtual void printData()const override;
-    
-    void changeData(){
-        Person::changeData();}
-    
-    void showFlightData(string id) const;
-
-    void setFlightData();
+    //Change the flight data of the passenger (does not change the actual flight data)
+    void setMyFlightData();
 };
 
-//consider adding a boolean for accompanied, if the passenger is a child the accompanied should be set to true (in the constructor)

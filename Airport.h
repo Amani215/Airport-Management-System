@@ -12,38 +12,45 @@ class Airport{
         string location;    //location of the airport
         string password;    //password of the airport
     public:
+        //CONSTRUCTORS & DESTRUCTORS
+
         //Default constructor
-        Airport();
-        
+        Airport();   
         //Destructor
         ~Airport();
         
+        //FUNCTIONS FOR SHOWING DATA
+
+        //Shows all the Data of the Airport (name, location, passengersNum, employeesNum and flightsData)
+        void showAirportData() const;
+        //Shows all the General Data of the Airport and the password
+        void showAirportDataPersonnel() const;
+        //Shows the password
+        void showPassword()const;
         //returns the number of registered passengers in the airport
-        int passengersNum() const;
-        
+        int passengersNum() const;       
         //returns the number of registered employees in the airport
         int employeesNum() const;
-        
+        //prints the data of a flight according to a given id
+        void showFlightData(string flightId)const;
         //prints the data of each flight registered in the airport
         void flightsData() const;
         
-        //returns true if the input is equal to the password
-        bool checkPassword(string input)const;
-        
-        //Shows all the Data of the Airport (name, location, passengersNum, employeesNum and flightsData)
-        void showAirportData() const;
-        
-        //Shows all the General Data of the Airport and the password
-        void showAirportDataPersonnel() const;
-        
-        //Shows the password
-        void showPassword()const;
-        
-        void setAirportName();
+        //FUNCTIONS FOR CHANGING DATA
 
+        //Change the name of the airport
+        void setAirportName();
+        //change the password
+        void setPassword();
+        //Changes the data of a flight according to an id
         void changeFlightData();
 
-        void setPassword();
+        //OTHER FUNCTIONS
+
+        //returns true if the input is equal to the password
+        bool checkPassword(string input)const;
+        //returns the name of the file
+        string getfileName() const{return fileName;}
 };
 
 //*********************************************************************************************

@@ -6,9 +6,13 @@
 
 using namespace std;
 
+//*************************************
+//CONSTRUCTORS & DESTRUCTORS
+//*************************************
+
 //Constructor
 Passenger::Passenger(Airport airport):Person(airport){
-    cout<<"If you have a flight please enter the flight number  lease press 0)"<<endl;
+    cout<<"If you have a flight please enter the flight number (if not please press 0)"<<endl;
     cin>>flightNum;
     if(flightNum=="0"){
         flightSeat="0";
@@ -19,11 +23,22 @@ Passenger::Passenger(Airport airport):Person(airport){
     }
 }
 
+Passenger::Passenger(int id, string filename):Person(id,filename){
+    //open file
+    //search for id
+    //give the flight attributes
+}
+
 //Destructor
 Passenger::~Passenger(){}
 
+//*************************************
+//MENU AND FUNCTIONS RELATED TO IT
+//*************************************
+
 //the passengers only get options for general information about the airport and their flights
 void Passenger::menu(Airport airport)const{
+    Passenger passenger(id,airport.getfileName());
     int option;
     
     do{
@@ -42,28 +57,28 @@ void Passenger::menu(Airport airport)const{
        
        //execute the user's choice
        switch(option){
-           case 1:
-                printData();
+           case 1://Done
+                passenger.printData();
                 break;
-           case 2:
+           case 2://Done
                 airport.showAirportData();
                 break;
            case 3:
-                showFlightData(flightNum);
+                airport.showFlightData(flightNum);
                 break;
-           case 4:
-                //changeData(this);
+           case 4://Done (file handling)
+                passenger.changeData();
                 break;
-           case 5:
-                //setFlightData();//error
+           case 5://Done (file handling)
+                passenger.setMyFlightData();
                 break;
            case 6:
                 airport.flightsData();
                 break;
-           case 0:
+           case 0://Done
                 cout<<"Thank you, goodbye!"<<endl;
                 break;
-           default: //error handling for characters and strings!!
+           default: 
                 cout<<"There's no such option!"<<endl; 
                 break;
        }
@@ -86,15 +101,8 @@ void Passenger::printData()const{
     cout<<"     Booked seat: "<<flightSeat<<endl;
 }
 
-//OPTION 3: See flight data
-void Passenger::showFlightData(string id) const{
-    //open file and search for id
-    //create object Flight with id
-    //flight.showFlightData();
-}
-
 //Option 5: Change Flight Data
-void Passenger::setFlightData(){
+void Passenger::setMyFlightData(){
     cout<<"Current flight ID: "<<flightNum<<endl;
     cout<<"New Flight ID (if you don't want to change it please write it again): ";
     cin>>flightNum;
@@ -103,3 +111,6 @@ void Passenger::setFlightData(){
     cout<<"New seat (if you don't want to change it please write it again): ";
     cin>>flightSeat;
 }
+
+//*********************MISSING*******************
+//Passenger passenger(id,airport.getfileName()); 
