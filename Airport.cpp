@@ -99,15 +99,31 @@ int Airport::employeesNum() const{
 
 //Shows a flight according to the given id
 void Airport::showFlightData(string flightId) const{
+    bool found=false;
+
+    string str;
     //open file and search for id
-    //create object Flight with id
-    //flight.showFlightData();
+    ifstream file;
+    try{
+        file.open(fileName);
+    }
+    catch(...){
+        cout<<"There was an error"<<endl;
+    }
+
+    while(getline(file,str)){
+        if((this->getAttributeFromLine(str,1)=="flight")&&(this->getAttributeFromLine(str,2)==flightId)){
+            Flight flight(flightId,*this);
+            flight.showFlightData();
+            found=true;
+        }
+    }
+    if(found==false) cout<<"There's no flight with such an id"<<endl;
 }
 
 //prints the data of each flight registered in the airport
 void Airport::flightsData() const{
     string str;
-    int counter=0;
     //open file for reading
     ifstream file;
     try{
@@ -116,10 +132,9 @@ void Airport::flightsData() const{
     catch(...){
         cout<<"There was an error.";
     }
-    //count lines of passengers
     while (getline(file,str)){
         if(typeOfObjectInLine(str)=="flight"){
-            //flight.showflightdata;
+            showFlightData(getAttributeFromLine(str,1));
         }
     }
 }
@@ -145,10 +160,10 @@ void Airport::setAirportName(){
 
 //Change a flight data according to the given id
 void Airport::changeFlightData(){
-    int input;
+    string input;
     cout<<"Please give the id of the flight: ";
     cin>>input;
-    Flight flight(input,fileName);
+    Flight flight(input,*this);
     //change the flight with that id in the file
 }
 
@@ -182,7 +197,7 @@ string Airport::getAttributeFromLine(string str,int orderOfTheAttribute)const{
         }
         j++;
     }while (j<orderOfTheAttribute);
-    j=0;
+    j=0;i++;
     while (str[i]!=';'){
         attribute[j]=str[i];
         j++;

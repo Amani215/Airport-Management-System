@@ -15,7 +15,7 @@ Employee::Employee(Airport airport):Person(airport){
     salary=300000;
     ofstream file;
     try{
-         file.open(airport.getfileName());
+         file.open(airport.getfileName(),ios::app);
     }
     catch(...){
          cout<<"There was an error.";
@@ -27,7 +27,7 @@ Employee::Employee(Airport airport):Person(airport){
 }
 
 Employee::Employee(int id, Airport airport):Person(id){
-this->id=-1;
+     this->id=-1;
 
     string str;
     //open file
@@ -152,9 +152,4 @@ void Employee::setSalary(){
 //********************************************************************************************
 //                                      REMARKS
 //********************************************************************************************
-//*the functions for changing data should be friend functions since they shouldn't be available for the passenger class
-//Employee employee(id, airport.getfileName());
 //option 3,6
-
-//Done:
-//*Option 1, 2, 4,5,7

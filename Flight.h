@@ -2,6 +2,7 @@
 
 #include<iostream>
 #include<string>
+#include "Airport.h"
 
 using namespace std;
 
@@ -19,8 +20,8 @@ class Flight{
     //CONSTRUCTORS & DESTRUCTORS
 
     //Default constructor
-    Flight();
-    Flight(int id, string filename);
+    Flight(Airport airport);
+    Flight(string flightNum, Airport airport);
     //Destructor
     ~Flight(){}
     

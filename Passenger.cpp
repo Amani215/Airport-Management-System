@@ -24,12 +24,12 @@ Passenger::Passenger(Airport airport):Person(airport){
 
         ofstream file;
     try{
-         file.open(airport.getfileName());
+         file.open(airport.getfileName(),ios::app);
     }
     catch(...){
          cout<<"There was an error.";
     }
-    string str="employee;"+to_string(id)+";"+passport+";"+name+";"+to_string(age)+";"+nationality+";"+flightNum+";"+flightSeat;
+    string str="passenger;"+to_string(id)+";"+passport+";"+name+";"+to_string(age)+";"+nationality+";"+flightNum+";"+flightSeat;
     file<<str<<endl;
     file.close();
 }
@@ -59,7 +59,7 @@ Passenger::Passenger(int id, Airport airport):Person(id){
             flightSeat=airport.getAttributeFromLine(str,7);
         }   
     }
-
+cout<<airport.getAttributeFromLine(str,1)<<endl;
     if(this->id==-1) cout<<"The provided id does not exist"<<endl;
 
     file.close();
@@ -147,6 +147,3 @@ void Passenger::setMyFlightData(){
     cout<<"New seat (if you don't want to change it please write it again): ";
     cin>>flightSeat;
 }
-
-//*********************MISSING*******************
-//Passenger passenger(id,airport.getfileName()); 

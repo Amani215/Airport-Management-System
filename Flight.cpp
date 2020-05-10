@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "Flight.h"
+#include "Airport.h"
 
 using namespace std;
     //*************************************
@@ -8,7 +9,7 @@ using namespace std;
     //*************************************
 
     //Default constructor
-    Flight::Flight(){
+    Flight::Flight(Airport airport){
         long int input;
         
         cout<<"Flight Number: ";
@@ -48,12 +49,52 @@ using namespace std;
         cin>>sizeOfTheCrew;
         
         crew= nullptr;
+
+        //adding the object to the file
+        ofstream file;
+        try{
+            file.open(airport.getfileName());
+        }
+        catch(...){
+            cout<<"There was an error.";
+        }
+        string str="flight;"+flightNum+";"+destination+";"+";"+to_string(price)+";"+airlineCompany+";"+to_string(numberOfSeats);
+        file<<str<<endl;
+
+        file.close();
     }
     
-    Flight::Flight(int id, string filename){
+    Flight::Flight(string flightNum, Airport airport){
+        this->flightNum="-1";
+
+        string str;
         //open file
-        //search for the id
-        //get the attributes an assign them
+        ifstream file;
+        try{
+            file.open(airport.getfileName());
+        }
+        catch(...){
+            cout<<"there was an error";
+        }
+        //search for id and assign the attributes
+        while (getline(file,str))
+        {
+            if((airport.typeOfObjectInLine(str)=="flight")&&(airport.getAttributeFromLine(str,1)==flightNum)){
+                this->flightNum=flightNum;
+                destination=airport.getAttributeFromLine(str,2);
+                //int dateOfTakingOff[8];
+                //int timeOfTakingOff[4]; 
+                price=stod(airport.getAttributeFromLine(str,5));      
+                airlineCompany=airport.getAttributeFromLine(str,6); 
+                numberOfSeats=stoi(airport.getAttributeFromLine(str,7));     
+                //string* crew;
+                //int sizeOfTheCrew;
+            }   
+        }
+
+        if(this->flightNum=="-1") cout<<"The provided id does not exist"<<endl;
+
+        file.close();
     }
 
     
@@ -78,15 +119,15 @@ using namespace std;
     //shows the data of the flight
     void Flight::showFlightData() const{
         cout<<"Flight Number: "<<flightNum<<endl;
-        cout<<"Destination: "<<destination<<endl;
-        cout<<"Date of taking off: ";
+        cout<<"     Destination: "<<destination<<endl;
+        cout<<"     Date of taking off: ";
         showDate();
-        cout<<"Time of taking off: ";
+        cout<<"     Time of taking off: ";
         showTime();
-        cout<<"Price: "<<price<<endl;
-        cout<<"Airline Company: "<<airlineCompany<<endl;
-        cout<<"Number of seats: "<<numberOfSeats<<endl;
-        cout<<"Crew list:"<<endl;
+        cout<<"     Price: "<<price<<endl;
+        cout<<"     Airline Company: "<<airlineCompany<<endl;
+        cout<<"     Number of seats: "<<numberOfSeats<<endl;
+        cout<<"     Crew list:"<<endl;
         showCrew();
     }
     
@@ -110,9 +151,12 @@ using namespace std;
     void Flight::showCrew() const{
         if(crew){
             for(int i=0;i<sizeOfTheCrew;i++){
-                cout<<i<<". "<<crew[i]<<endl;
+                cout<<"         "<<i<<". "<<crew[i]<<endl;
             }
         }else{
-            cout<<"There are no names yet..."<<endl;
+            cout<<"         There are no names yet..."<<endl;
         }
     }
+
+//**********ISSUES*********
+//how to add a table in a file?
