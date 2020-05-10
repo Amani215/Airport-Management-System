@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include "Employee.h"
 #include "Person.h"
@@ -12,6 +13,16 @@ using namespace std;
 //Constructor
 Employee::Employee(Airport airport):Person(airport){
     salary=300000;
+    ofstream file;
+    try{
+         file.open(airport.getfileName());
+    }
+    catch(...){
+         cout<<"There was an error.";
+    }
+    string str="employee;"+to_string(id)+";"+passport+";"+name+";"+to_string(age)+";"+nationality+";"+to_string(salary);
+    file<<str<<endl;
+    file.close();
 }
 
 Employee::Employee(int id, string filename):Person(id,filename){

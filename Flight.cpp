@@ -56,8 +56,6 @@ using namespace std;
         //get the attributes an assign them
     }
 
-    //Destructor
-    Flight::~Flight(){}
     
     //*************************************
     //FUNCTIONS FOR CHANGING DATA

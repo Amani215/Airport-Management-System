@@ -17,7 +17,7 @@ class Airport{
         //Default constructor
         Airport();   
         //Destructor
-        ~Airport();
+        ~Airport(){}
         
         //FUNCTIONS FOR SHOWING DATA
 
@@ -51,6 +51,10 @@ class Airport{
         bool checkPassword(string input)const;
         //returns the name of the file
         string getfileName() const{return fileName;}
+        //returns the type of the object in a line
+        string typeOfObjectInLine(string str)const;
+
+        int getIdFromLine(string str) const;
 };
 
 //*********************************************************************************************

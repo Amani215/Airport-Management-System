@@ -1,5 +1,6 @@
 #include <iostream>
-#include<string>
+#include <fstream>
+#include<string> 
 #include "Airport.h"
 #include "Flight.h"
 
@@ -20,11 +21,8 @@ Airport::Airport(){
     
     password="admin";
     
-    fileName=airportName+".txt";
+    fileName=airportName+"-"+location+".txt";
 }
-
-//Destructor
-Airport::~Airport(){}
 
 
 //*********************************************
@@ -57,18 +55,46 @@ void Airport::showPassword()const{ cout<<"Password: "<<password<<endl; }
 
 //returns the number of registered passengers in the airport
 int Airport::passengersNum() const{
+    string str;
+    int counter=0;
     //open file for reading
-    //count ids that begin with p
+    ifstream file;
+    try{
+        file.open(fileName);
+    }
+    catch(...){
+        cout<<"There was an error.";
+    }
+    //count lines of passengers
+    while (getline(file,str)){
+        if(typeOfObjectInLine(str)=="passenger"){
+            counter++;
+        }
+    }
     //return the number
-    return 0;
+    return counter;
 }
 
 //returns the number of registered employees in the airport
 int Airport::employeesNum() const{
+    string str;
+    int counter=0;
     //open file for reading
-    //count ids that begin with e
+    ifstream file;
+    try{
+        file.open(fileName);
+    }
+    catch(...){
+        cout<<"There was an error.";
+    }
+    //count lines of passengers
+    while (getline(file,str)){
+        if(typeOfObjectInLine(str)=="employee"){
+            counter++;
+        }
+    }
     //return the number
-    return 0;
+    return counter;
 }
 
 //Shows a flight according to the given id
@@ -80,7 +106,22 @@ void Airport::showFlightData(string flightId) const{
 
 //prints the data of each flight registered in the airport
 void Airport::flightsData() const{
-    
+    string str;
+    int counter=0;
+    //open file for reading
+    ifstream file;
+    try{
+        file.open(fileName);
+    }
+    catch(...){
+        cout<<"There was an error.";
+    }
+    //count lines of passengers
+    while (getline(file,str)){
+        if(typeOfObjectInLine(str)=="flight"){
+            //flight.showflightdata;
+        }
+    }
 }
 
 
@@ -119,4 +160,27 @@ void Airport::changeFlightData(){
 //returns true if the input is equal to the password
 bool Airport::checkPassword(string input)const{
     return (input.compare(password)==0);
+}
+
+//returns the type of the object in the line
+string Airport::typeOfObjectInLine(string str)const{
+    string temp;
+    int i=0;
+    while (str[i]!=';'){
+        temp[i]=str[i];
+        i++;
+    }
+    return temp;
+}
+
+int Airport::getIdFromLine(string str) const{
+    string idstring="";
+    int j=0, i=0;//position of first ;
+    while (str[i]!=';')
+        idstring[j]=str[i];
+        j++;
+        i++;
+    }
+    //int res= std::stoi(idstring);
+    return 0;
 }

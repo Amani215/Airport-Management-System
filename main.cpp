@@ -20,7 +20,7 @@ int main()
         Employee user(airport);
         user.menu(airport);
     }
-    else{
+    else{ 
         Passenger user(airport);
         user.menu(airport);
     }

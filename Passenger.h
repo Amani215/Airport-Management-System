@@ -14,7 +14,7 @@ class Passenger:public Person{
 
     //Constructor
     Passenger(Airport airport);   
-    Passenger(int id, string filename);
+    Passenger(int id, Airport airport);
     //Destructor
     ~Passenger();
     

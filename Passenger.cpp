@@ -21,11 +21,36 @@ Passenger::Passenger(Airport airport):Person(airport){
         cout<<"Please specify your seat number";
         cin>>flightSeat;
     }
+
+        ofstream file;
+    try{
+         file.open(airport.getfileName());
+    }
+    catch(...){
+         cout<<"There was an error.";
+    }
+    string str="employee;"+to_string(id)+";"+passport+";"+name+";"+to_string(age)+";"+nationality+";"+flightNum+";"+flightSeat;
+    file<<str<<endl;
+    file.close();
 }
 
-Passenger::Passenger(int id, string filename):Person(id,filename){
+Passenger::Passenger(int id, Airport airport):Person(id,airport.getfileName()){
+    string str;
     //open file
+    ifstream file;
+    try{
+        file.open(airport.getfileName());
+    }
+    catch(...){
+        cout<<"there was an error";
+    }
     //search for id
+    while (getline(file,str))
+    {
+        if((airport.typeOfObjectInLine(str)=="passenger")&&(airport.getIdFromLine(str)==id)
+            cout<<"yes";
+    }
+    
     //give the flight attributes
 }
 
@@ -38,7 +63,7 @@ Passenger::~Passenger(){}
 
 //the passengers only get options for general information about the airport and their flights
 void Passenger::menu(Airport airport)const{
-    Passenger passenger(id,airport.getfileName());
+    Passenger passenger(id,airport);
     int option;
     
     do{
