@@ -22,21 +22,22 @@ Passenger::Passenger(Airport airport):Person(airport){
         cin>>flightSeat;
     }
 
-        ofstream file;
+    ofstream file;
     try{
          file.open(airport.getfileName(),ios::app);
     }
     catch(...){
          cout<<"There was an error.";
     }
-    string str="passenger;"+to_string(id)+";"+passport+";"+name+";"+to_string(age)+";"+nationality+";"+flightNum+";"+flightSeat;
+    string str="passenger;"+to_string(id)+";"+passport+";"+name+";"+to_string(age)+";"+nationality+";"+flightNum+";"+flightSeat+";";
     file<<str<<endl;
+        cout<<str<<endl;
+
     file.close();
 }
 
-Passenger::Passenger(int id, Airport airport):Person(id){
+Passenger::Passenger(int id, Airport airport):Person(id){//*************************************
     this->id=-1;
-
     string str;
     //open file
     ifstream file;
@@ -49,18 +50,28 @@ Passenger::Passenger(int id, Airport airport):Person(id){
     //search for id and assign the attributes
     while (getline(file,str))
     {
+        cout<<airport.getAttributeFromLine(str,1)<<endl;
+        cout<<airport.typeOfObjectInLine(str);
         if((airport.typeOfObjectInLine(str)=="passenger")&&(stoi(airport.getAttributeFromLine(str,1))==id)){
             this->id=id;
+            cout<<id<<endl;
             passport=airport.getAttributeFromLine(str,2);
+            cout<<passport<<endl;
             name=airport.getAttributeFromLine(str,3);
+            cout<<name<<endl;
             age=stoi(airport.getAttributeFromLine(str,4));
+            cout<<age<<endl;
             nationality=airport.getAttributeFromLine(str,5);
+            cout<<nationality<<endl;
             flightNum=airport.getAttributeFromLine(str,6);
+            cout<<flightNum<<endl;
             flightSeat=airport.getAttributeFromLine(str,7);
+            cout<<flightSeat<<endl;
+            break;
         }   
     }
-cout<<airport.getAttributeFromLine(str,1)<<endl;
-    if(this->id==-1) cout<<"The provided id does not exist"<<endl;
+    //cout<<"line 84"<<airport.getAttributeFromLine(str,1)<<endl;
+    if(this->id==id) cout<<"id="<<id<<endl;
 
     file.close();
 }

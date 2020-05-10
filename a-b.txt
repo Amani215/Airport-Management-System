@@ -1,2 +1,5 @@
-passenger;1;a;a;1;a;0;0
-passenger;1;a;a;1;a;0;0
+passenger;1;csd;qsc;2;qsd;0;0
+passenger;1;dqsx;sqcx;5;qsc;0;0
+passenger;1;sd;sd;1;sdc;0;0
+passenger;1;sdvc;ds;2;scd;0;0
+passenger;1;dcs;dsc;1;sdc;0;0

@@ -189,19 +189,21 @@ string Airport::typeOfObjectInLine(string str)const{
 }
 
 string Airport::getAttributeFromLine(string str,int orderOfTheAttribute)const{
-    string attribute;
+    char attribute[50];
     int j=0, i=0;
     do{
         while (str[i]!=';'){
             i++;
         }
         j++;
+        i++;
     }while (j<orderOfTheAttribute);
-    j=0;i++;
+    j=0;
     while (str[i]!=';'){
         attribute[j]=str[i];
         j++;
         i++;
     }
+    attribute[j]='\0';
     return attribute;
 }
