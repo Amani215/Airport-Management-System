@@ -34,7 +34,9 @@ Passenger::Passenger(Airport airport):Person(airport){
     file.close();
 }
 
-Passenger::Passenger(int id, Airport airport):Person(id,airport.getfileName()){
+Passenger::Passenger(int id, Airport airport):Person(id){
+    this->id=-1;
+
     string str;
     //open file
     ifstream file;
@@ -44,14 +46,23 @@ Passenger::Passenger(int id, Airport airport):Person(id,airport.getfileName()){
     catch(...){
         cout<<"there was an error";
     }
-    //search for id
+    //search for id and assign the attributes
     while (getline(file,str))
     {
-        if((airport.typeOfObjectInLine(str)=="passenger")&&(airport.getIdFromLine(str)==id)
-            cout<<"yes";
+        if((airport.typeOfObjectInLine(str)=="passenger")&&(stoi(airport.getAttributeFromLine(str,1))==id)){
+            this->id=id;
+            passport=airport.getAttributeFromLine(str,2);
+            name=airport.getAttributeFromLine(str,3);
+            age=stoi(airport.getAttributeFromLine(str,4));
+            nationality=airport.getAttributeFromLine(str,5);
+            flightNum=airport.getAttributeFromLine(str,6);
+            flightSeat=airport.getAttributeFromLine(str,7);
+        }   
     }
-    
-    //give the flight attributes
+
+    if(this->id==-1) cout<<"The provided id does not exist"<<endl;
+
+    file.close();
 }
 
 //Destructor

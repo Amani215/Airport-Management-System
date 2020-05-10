@@ -22,13 +22,38 @@ Employee::Employee(Airport airport):Person(airport){
     }
     string str="employee;"+to_string(id)+";"+passport+";"+name+";"+to_string(age)+";"+nationality+";"+to_string(salary);
     file<<str<<endl;
+
     file.close();
 }
 
-Employee::Employee(int id, string filename):Person(id,filename){
-     //open file
-     //search for id
-     //assign salary
+Employee::Employee(int id, Airport airport):Person(id){
+this->id=-1;
+
+    string str;
+    //open file
+    ifstream file;
+    try{
+        file.open(airport.getfileName());
+    }
+    catch(...){
+        cout<<"there was an error";
+    }
+    //search for id and assign the attributes
+    while (getline(file,str))
+    {
+        if((airport.typeOfObjectInLine(str)=="employee")&&(stoi(airport.getAttributeFromLine(str,1))==id)){
+            this->id=id;
+            passport=airport.getAttributeFromLine(str,2);
+            name=airport.getAttributeFromLine(str,3);
+            age=stoi(airport.getAttributeFromLine(str,4));
+            nationality=airport.getAttributeFromLine(str,5);
+            salary=stod(airport.getAttributeFromLine(str,6));
+        }   
+    }
+
+    if(this->id==-1) cout<<"The provided id does not exist"<<endl;
+
+    file.close();
 }
 
 //**********************************************
@@ -37,7 +62,7 @@ Employee::Employee(int id, string filename):Person(id,filename){
 
 //the employees have more options in their menu
 void Employee::menu(Airport airport)const{
-    Employee employee(id, airport.getfileName());
+    Employee employee(id, airport);
     string password;
     
     cout<<"Please write the airport password: ";

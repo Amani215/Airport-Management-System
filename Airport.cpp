@@ -173,14 +173,20 @@ string Airport::typeOfObjectInLine(string str)const{
     return temp;
 }
 
-int Airport::getIdFromLine(string str) const{
-    string idstring="";
-    int j=0, i=0;//position of first ;
-    while (str[i]!=';')
-        idstring[j]=str[i];
+string Airport::getAttributeFromLine(string str,int orderOfTheAttribute)const{
+    string attribute;
+    int j=0, i=0;
+    do{
+        while (str[i]!=';'){
+            i++;
+        }
+        j++;
+    }while (j<orderOfTheAttribute);
+    j=0;
+    while (str[i]!=';'){
+        attribute[j]=str[i];
         j++;
         i++;
     }
-    //int res= std::stoi(idstring);
-    return 0;
+    return attribute;
 }

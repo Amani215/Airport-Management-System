@@ -11,7 +11,7 @@ class Employee:public Person{
 
         //Constructor
         Employee(Airport airport);
-        Employee(int id, string filename);
+        Employee(int id, Airport airport);
         //Destructor
         ~Employee(){}
         

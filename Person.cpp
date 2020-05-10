@@ -27,12 +27,6 @@ Person::Person(Airport airport){
     }
 }
 
-Person::Person(int id,string filename){
-    //open file
-    //search for id
-    //get the attributes
-}
-
 //Destructor
 Person::~Person(){}
 

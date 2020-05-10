@@ -54,7 +54,7 @@ class Airport{
         //returns the type of the object in a line
         string typeOfObjectInLine(string str)const;
 
-        int getIdFromLine(string str) const;
+        string getAttributeFromLine(string str,int orderOfTheAttribute)const;
 };
 
 //*********************************************************************************************

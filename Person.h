@@ -15,7 +15,7 @@ class Person{
 
     //Constructor
     Person(Airport airport);
-    Person(int id, string filename);
+    Person(int id){}//this constructor is implemented inside the sub-classes constructors
     //Destructor
     ~Person();
     
