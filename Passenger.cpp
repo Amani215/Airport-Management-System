@@ -29,16 +29,17 @@ Passenger::Passenger(Airport airport):Person(airport){
     catch(...){
          cout<<"There was an error.";
     }
-    string str="passenger;"+to_string(id)+";"+passport+";"+name+";"+to_string(age)+";"+nationality+";"+flightNum+";"+flightSeat+";";
-    file<<str<<endl;
+    string str="passenger,"+to_string(id)+","+passport+","+name+","+to_string(age)+","+nationality+","+flightNum+","+flightSeat+"\n";
+    file<<str;
         cout<<str<<endl;
 
     file.close();
 }
 
-Passenger::Passenger(int id, Airport airport):Person(id){//*************************************
+Passenger::Passenger(int id, Airport airport):Person(id){
     this->id=-1;
     string str;
+
     //open file
     ifstream file;
     try{
@@ -47,31 +48,23 @@ Passenger::Passenger(int id, Airport airport):Person(id){//*********************
     catch(...){
         cout<<"there was an error";
     }
+
     //search for id and assign the attributes
     while (getline(file,str))
     {
-        cout<<airport.getAttributeFromLine(str,1)<<endl;
-        cout<<airport.typeOfObjectInLine(str);
         if((airport.typeOfObjectInLine(str)=="passenger")&&(stoi(airport.getAttributeFromLine(str,1))==id)){
             this->id=id;
-            cout<<id<<endl;
             passport=airport.getAttributeFromLine(str,2);
-            cout<<passport<<endl;
             name=airport.getAttributeFromLine(str,3);
-            cout<<name<<endl;
             age=stoi(airport.getAttributeFromLine(str,4));
-            cout<<age<<endl;
             nationality=airport.getAttributeFromLine(str,5);
-            cout<<nationality<<endl;
             flightNum=airport.getAttributeFromLine(str,6);
-            cout<<flightNum<<endl;
             flightSeat=airport.getAttributeFromLine(str,7);
-            cout<<flightSeat<<endl;
             break;
         }   
     }
-    //cout<<"line 84"<<airport.getAttributeFromLine(str,1)<<endl;
-    if(this->id==id) cout<<"id="<<id<<endl;
+
+    if(this->id==-1) cout<<"Couldn't find the id!"<<endl;
 
     file.close();
 }
@@ -86,6 +79,8 @@ Passenger::~Passenger(){}
 //the passengers only get options for general information about the airport and their flights
 void Passenger::menu(Airport airport)const{
     Passenger passenger(id,airport);
+    if(passenger.id!=id) return; //if an error happens while searching for the id
+
     int option;
     
     do{

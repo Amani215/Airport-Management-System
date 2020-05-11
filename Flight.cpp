@@ -58,7 +58,7 @@ using namespace std;
         catch(...){
             cout<<"There was an error.";
         }
-        string str="flight;"+flightNum+";"+destination+";"+";"+to_string(price)+";"+airlineCompany+";"+to_string(numberOfSeats);
+        string str="flight,"+flightNum+","+destination+","+to_string(price)+","+airlineCompany+","+to_string(numberOfSeats)+"\n";
         file<<str<<endl;
 
         file.close();

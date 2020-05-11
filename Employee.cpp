@@ -20,16 +20,16 @@ Employee::Employee(Airport airport):Person(airport){
     catch(...){
          cout<<"There was an error.";
     }
-    string str="employee;"+to_string(id)+";"+passport+";"+name+";"+to_string(age)+";"+nationality+";"+to_string(salary);
-    file<<str<<endl;
+    string str="employee,"+to_string(id)+","+passport+","+name+","+to_string(age)+","+nationality+","+to_string(salary)+"\n";
+    file<<str;
 
     file.close();
 }
 
 Employee::Employee(int id, Airport airport):Person(id){
-     this->id=-1;
-
+    this->id=-1;
     string str;
+
     //open file
     ifstream file;
     try{
@@ -38,6 +38,7 @@ Employee::Employee(int id, Airport airport):Person(id){
     catch(...){
         cout<<"there was an error";
     }
+
     //search for id and assign the attributes
     while (getline(file,str))
     {
@@ -51,7 +52,7 @@ Employee::Employee(int id, Airport airport):Person(id){
         }   
     }
 
-    if(this->id==-1) cout<<"The provided id does not exist"<<endl;
+    if(this->id==-1) cout<<"Couldn't find the id!"<<endl;
 
     file.close();
 }
@@ -63,8 +64,9 @@ Employee::Employee(int id, Airport airport):Person(id){
 //the employees have more options in their menu
 void Employee::menu(Airport airport)const{
     Employee employee(id, airport);
+    if(employee.id!=id) return;//if an error happens
+
     string password;
-    
     cout<<"Please write the airport password: ";
     cin>>password;
     
