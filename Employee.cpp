@@ -11,50 +11,49 @@ using namespace std;
 //**********************************************
 
 //Constructor
-Employee::Employee(Airport airport):Person(airport){
-    salary=300000;
-    ofstream file;
-    try{
-         file.open(airport.getfileName(),ios::app);
-    }
-    catch(...){
-         cout<<"There was an error.";
-    }
-    string str="employee,"+to_string(id)+","+passport+","+name+","+to_string(age)+","+nationality+","+to_string(salary)+"\n";
-    file<<str;
+Employee::Employee(Airport airport,string passport, bool existantPerson)
+     :Person(airport,passport, existantPerson)
+{
+     if(existantPerson){
+          string str;
 
-    file.close();
-}
+          //open file
+          ifstream file;
+          try{
+               file.open(airport.getfileName());
+          }
+          catch(...){
+               cout<<"there was an error";
+          }
 
-Employee::Employee(int id, Airport airport):Person(id){
-    this->id=-1;
-    string str;
+          //search for id and assign the attributes
+          while (getline(file,str))
+          {
+               if((airport.typeOfObjectInLine(str)=="employee")&&(airport.getAttributeFromLine(str,1)==passport)){
+                    passport=airport.getAttributeFromLine(str,1);
+                    name=airport.getAttributeFromLine(str,2);
+                    age=stoi(airport.getAttributeFromLine(str,3));
+                    nationality=airport.getAttributeFromLine(str,4);
+                    salary=stod(airport.getAttributeFromLine(str,5));
+               }   
+          }
 
-    //open file
-    ifstream file;
-    try{
-        file.open(airport.getfileName());
-    }
-    catch(...){
-        cout<<"there was an error";
-    }
+          file.close();
+     }
+     else{
+          salary=300000;
+          ofstream file;
+          try{
+               file.open(airport.getfileName(),ios::app);
+          }
+          catch(...){
+               cout<<"There was an error.";
+          }
+          string str="employee,"+passport+","+name+","+to_string(age)+","+nationality+","+to_string(salary)+"\n";
+          file<<str;
 
-    //search for id and assign the attributes
-    while (getline(file,str))
-    {
-        if((airport.typeOfObjectInLine(str)=="employee")&&(stoi(airport.getAttributeFromLine(str,1))==id)){
-            this->id=id;
-            passport=airport.getAttributeFromLine(str,2);
-            name=airport.getAttributeFromLine(str,3);
-            age=stoi(airport.getAttributeFromLine(str,4));
-            nationality=airport.getAttributeFromLine(str,5);
-            salary=stod(airport.getAttributeFromLine(str,6));
-        }   
-    }
-
-    if(this->id==-1) cout<<"Couldn't find the id!"<<endl;
-
-    file.close();
+          file.close();
+     }
 }
 
 //**********************************************
@@ -63,8 +62,8 @@ Employee::Employee(int id, Airport airport):Person(id){
 
 //the employees have more options in their menu
 void Employee::menu(Airport airport)const{
-    Employee employee(id, airport);
-    if(employee.id!=id) return;//if an error happens
+    Employee employee(airport,passport,true);
+    if(employee.passport!=passport) return;//if an error happens
 
     string password;
     cout<<"Please write the airport password: ";
@@ -132,7 +131,6 @@ void Employee::menu(Airport airport)const{
 //prints the data of the employee
 void Employee::printData()const{
     cout<<"--My Personal Data--"<<endl;
-    cout<<"ID: "<<id<<endl;
     cout<<"Passport number: "<<passport<<endl;
     cout<<"Name: "<<name<<endl;
     cout<<"Age: "<<age<<endl;

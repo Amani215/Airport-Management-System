@@ -10,8 +10,8 @@ class Employee:public Person{
         //CONSTRUCTORS & DESTRUCTORS 
 
         //Constructor
-        Employee(Airport airport);
-        Employee(int id, Airport airport);
+        //Employee(Airport airport);
+        Employee(Airport airport,string passport, bool existantPerson);
         //Destructor
         ~Employee(){}
         

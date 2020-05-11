@@ -177,6 +177,44 @@ bool Airport::checkPassword(string input)const{
     return (input.compare(password)==0);
 }
 
+bool Airport::existantEmployee(string passport)const{
+    ifstream file;
+    try{
+        file.open(fileName);
+    }
+    catch(...){
+        cout<<"Could not open file"<<endl;
+    }
+
+    string str;
+    while (getline(file, str)){
+        if((typeOfObjectInLine(str)=="employee")&&(passport==getAttributeFromLine(str,1))){
+            file.close();
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Airport::existantPassenger(string passport)const{
+    ifstream file;
+    try{
+        file.open(fileName);
+    }
+    catch(...){
+        cout<<"Could not open file"<<endl;
+    }
+
+    string str;
+    while (getline(file, str)){
+        if((typeOfObjectInLine(str)=="passenger")&&(passport==getAttributeFromLine(str,1))){
+            file.close();
+            return true;
+        }
+    }
+    return false;
+}
+
 //returns the type of the object in the line
 string Airport::typeOfObjectInLine(string str)const{
     char temp[10]="";

@@ -11,63 +11,65 @@ using namespace std;
 //*************************************
 
 //Constructor
-Passenger::Passenger(Airport airport):Person(airport){
-    cout<<"If you have a flight please enter the flight number (if not please press 0)"<<endl;
-    cin>>flightNum;
-    if(flightNum=="0"){
-        flightSeat="0";
+Passenger::Passenger(Airport airport,string passport, bool existantPerson)
+    :Person(airport,passport, existantPerson)
+{
+    if(existantPerson){
+        this->passport="";
+        //open file
+        ifstream file;
+        try{
+            file.open(airport.getfileName());
+        }
+        catch(...){
+            cout<<"there was an error";
+        }
+
+        //search for id and assign the attributes
+        string str;
+        while (getline(file,str))
+        {
+            if((airport.typeOfObjectInLine(str)=="passenger")&&(airport.getAttributeFromLine(str,1)==passport)){
+                this->passport=airport.getAttributeFromLine(str,1);
+                name=airport.getAttributeFromLine(str,2);
+                age=stoi(airport.getAttributeFromLine(str,3));
+                nationality=airport.getAttributeFromLine(str,4);
+                flightNum=airport.getAttributeFromLine(str,5);
+                flightSeat=airport.getAttributeFromLine(str,6);
+                break;
+            }   
+        }
+
+        if(this->passport=="") cout<<"There was an error"<<endl;
+
+        file.close();
     }
     else{
-        cout<<"Please specify your seat number";
-        cin>>flightSeat;
-    }
+        cout<<"If you have a flight please enter the flight number (if not please press 0)"<<endl;
+        cin>>flightNum;
+        if(flightNum=="0"){
+            flightSeat="0";
+        }
+        else{
+            cout<<"Please specify your seat number";
+            cin>>flightSeat;
+        }
+        ofstream file;
+        try{
+            file.open(airport.getfileName(),ios::app);
+        }
+        catch(...){
+            cout<<"There was an error.";
+        }
+        string str="passenger,"+passport+","+name+","+to_string(age)+","+nationality+","+flightNum+","+flightSeat+"\n";
+        file<<str;
+            cout<<str<<endl;
 
-    ofstream file;
-    try{
-         file.open(airport.getfileName(),ios::app);
+        file.close();
     }
-    catch(...){
-         cout<<"There was an error.";
-    }
-    string str="passenger,"+to_string(id)+","+passport+","+name+","+to_string(age)+","+nationality+","+flightNum+","+flightSeat+"\n";
-    file<<str;
-        cout<<str<<endl;
-
-    file.close();
 }
 
-Passenger::Passenger(int id, Airport airport):Person(id){
-    this->id=-1;
-    string str;
-
-    //open file
-    ifstream file;
-    try{
-        file.open(airport.getfileName());
-    }
-    catch(...){
-        cout<<"there was an error";
-    }
-
-    //search for id and assign the attributes
-    while (getline(file,str))
-    {
-        if((airport.typeOfObjectInLine(str)=="passenger")&&(stoi(airport.getAttributeFromLine(str,1))==id)){
-            this->id=id;
-            passport=airport.getAttributeFromLine(str,2);
-            name=airport.getAttributeFromLine(str,3);
-            age=stoi(airport.getAttributeFromLine(str,4));
-            nationality=airport.getAttributeFromLine(str,5);
-            flightNum=airport.getAttributeFromLine(str,6);
-            flightSeat=airport.getAttributeFromLine(str,7);
-            break;
-        }   
-    }
-
-    if(this->id==-1) cout<<"Couldn't find the id!"<<endl;
-
-    file.close();
-}
+//Passenger::Passenger(Airport airport,string passport):Person(){}
 
 //Destructor
 Passenger::~Passenger(){}
@@ -78,8 +80,8 @@ Passenger::~Passenger(){}
 
 //the passengers only get options for general information about the airport and their flights
 void Passenger::menu(Airport airport)const{
-    Passenger passenger(id,airport);
-    if(passenger.id!=id) return; //if an error happens while searching for the id
+    Passenger passenger(airport,passport,true);
+    if(passenger.passport!=passport) return; //if an error happens while searching for the id
 
     int option;
     
@@ -133,7 +135,6 @@ void Passenger::menu(Airport airport)const{
 //prints the data of the Passenger 
 void Passenger::printData()const{
     cout<<"--My Personal Data--"<<endl;
-    cout<<"ID: "<<id<<endl;
     cout<<"Passport number: "<<passport<<endl;
     cout<<"Name: "<<name<<endl;
     cout<<"Age "<<age<<endl;

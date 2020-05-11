@@ -9,6 +9,7 @@ int main()
 {
     cout<<"* WELCOME TO THE AIRPORT MANAGEMENT SYSTEM *"<<endl<<endl;
     Airport airport;
+    string passport="";
     
     int nature;
     do{
@@ -16,12 +17,15 @@ int main()
         cin>>nature;
     }while ((nature!=0)&&(nature!=1));
     
+    cout<<"Please enter your passport number"<<endl;
+    cin>>passport;
+
     if(nature==0){
-        Employee user(airport);
+        Employee user(airport,passport,airport.existantEmployee(passport));
         user.menu(airport);
     }
     else{ 
-        Passenger user(airport);
+        Passenger user(airport,passport,airport.existantPassenger(passport));
         user.menu(airport);
     }
 

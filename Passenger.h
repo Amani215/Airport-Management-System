@@ -13,8 +13,8 @@ class Passenger:public Person{
     //CONSTRUCTORS & DESTRUCTORS
 
     //Constructor
-    Passenger(Airport airport);   
-    Passenger(int id, Airport airport);
+    Passenger(Airport airport,string passport, bool existantPerson);   
+    Passenger(Airport airport, string passport);
     //Destructor
     ~Passenger();
     

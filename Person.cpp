@@ -9,21 +9,34 @@ using namespace std;
 //*****************************************
 
 //Constructor
-Person::Person(Airport airport){
-    cout<<"Please give your passport number: ";
-    cin>>passport;
-    if(newPerson(airport)){
+Person::Person(Airport airport,string passport, bool existantPerson){
+    this->passport=passport;
+    if (existantPerson){
+        //open file for reading
+        ifstream file;
+        try{
+            file.open(airport.getfileName());
+        }
+        catch(...){
+            cout<<"Could not open file."<<endl;
+        }
+        //search for person with id
+        string str;
+        while (getline(file,str)){
+            if(airport.getAttributeFromLine(str,1)==passport){
+                name=airport.getAttributeFromLine(str,2);
+                age=stoi(airport.getAttributeFromLine(str,3));
+                nationality=airport.getAttributeFromLine(str,4);
+            }
+        }
+    }
+    else{
         cout<<"Please give your full name (without spaces): ";
         cin>>name;//add error handling for space
         cout<<"Please give your age: ";
         cin>>age;//add error handlin for characters
         cout<<"Please specify your nationality: ";
         cin>>nationality;//add error handlin for space
-        id=getID(airport);
-        cout<<"Your ID is: "<<id<<endl;
-    }
-    else{
-        this->getPerson(airport,id);
     }
 }
 
@@ -64,20 +77,42 @@ void Person::changeData(){
 //returns true if the person doesn't exist in the database
 bool Person::newPerson(Airport airport) const{
     //open file (airport.filename) for reading
+    ifstream file;
+    try{
+        file.open(airport.getfileName());
+    }
+    catch(...){
+        cout<<"Could not open file."<<endl;
+    }
     //search for passport in the file
-    //return true if passport is not found
-    //return false if passport is found
-}
-
-//returns a new id that doesn't exist in the database
-int Person::getID(Airport airport) {
-    //open file and return the number of the new line
-    return 1;
+    string str;
+    while (getline(file,str)){
+        if(airport.getAttributeFromLine(str,1)==passport){
+            file.close();
+            return false;
+        }
+    }
+    file.close();
+    return true;
 }
 
 //returns the Person with the id from the airport
-void Person::getPerson(Airport airport,int id){
+/*void Person::getPerson(Airport airport){
     //open file for reading
+    ifstream file;
+    try{
+        file.open(airport.getfileName());
+    }
+    catch(...){
+        cout<<"Could not open file."<<endl;
+    }
     //search for person with id
-    //create new person and give it the properties
-}
+    string str;
+    while (getline(file,str)){
+        if(airport.getAttributeFromLine(str,1)==passport){
+            name=airport.getAttributeFromLine(str,2);
+            age=stoi(airport.getAttributeFromLine(str,3));
+            nationality=airport.getAttributeFromLine(str,4);
+        }
+    }
+}*/

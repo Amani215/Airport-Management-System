@@ -5,7 +5,6 @@
 
 class Person{
   protected:
-    int id;          //id of the person
     string name;        //name of the person
     int age;            //age of the person
     string nationality; //nationality of the Person
@@ -14,8 +13,8 @@ class Person{
     //CONSTRUCTORS & DESTRUCTORS
 
     //Constructor
-    Person(Airport airport);
-    Person(int id){}//this constructor is implemented inside the sub-classes constructors
+    Person(Airport airport, string passport, bool existantPerson);
+    Person(){}//this constructor is implemented inside the sub-classes constructors*****************
     //Destructor
     ~Person();
     
@@ -33,10 +32,8 @@ class Person{
 
     //returns true if the person doesn't exist in the database
     bool newPerson(Airport airport) const;
-    //returns a new id that doesn't exist in the database
-    int getID(Airport airport);//should be virtual too so that passenger gets id with p and employee with e at the beginning
     //returns the Person with the id from the airport
-    void getPerson(Airport airport,int id);
+    void getPerson(Airport airport);//*******************************************
 };
 
 //************************************************************************************
