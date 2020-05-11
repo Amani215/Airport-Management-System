@@ -9,94 +9,76 @@ using namespace std;
     //*************************************
 
     //Default constructor
-    Flight::Flight(Airport airport){
-        long int input;
-        
-        cout<<"Flight Number: ";
-        cin>>flightNum;
-        
-        cout<<"Destination: ";
-        cin>>destination;
-        
-        cout<<"Date of taking off (ddmmyyyy): ";
-        cin>>input;
-        
-        int divider=1;
-        for(int i=0;i<8;i++){
-            dateOfTakingOff[i]=(int)(((input % (divider*10))/divider));
-            divider=divider*10;
-        }
-        
-        cout<<"Time of taking off (hhmm): ";
-        cin>>input;
-        
-        divider=1;
-        for(int i=0;i<4;i++){
-            timeOfTakingOff[i]=(int)(((input % (divider*10))/divider));
-            divider=divider*10;
-        }
-        
-        cout<<"Price of the ticket: ";
-        cin>>price;
-        
-        cout<<"Airline Company: ";
-        cin>>airlineCompany;
-        
-        cout<<"Number of seats: ";
-        cin>>numberOfSeats;
-        
-        cout<<"Size of the crew: ";
-        cin>>sizeOfTheCrew;
-        
-        crew= nullptr;
+    Flight::Flight(Airport airport,string flightNum):flightNum(flightNum){
+        if(airport.existantFlight(flightNum)){
+            this->flightNum="-1";
+            string str;
 
-        //adding the object to the file
-        ofstream file;
-        try{
-            file.open(airport.getfileName());
-        }
-        catch(...){
-            cout<<"There was an error.";
-        }
-        string str="flight,"+flightNum+","+destination+","+to_string(price)+","+airlineCompany+","+to_string(numberOfSeats)+"\n";
-        file<<str<<endl;
+            //open file
+            ifstream file;
+            try{file.open(airport.getfileName());}
+            catch(...){cout<<"there was an error";}
 
-        file.close();
+            //search for id and assign the attributes
+            while (getline(file,str))
+            {
+                if((airport.typeOfObjectInLine(str)=="flight")&&(airport.getAttributeFromLine(str,1)==flightNum)){
+                    this->flightNum=flightNum;
+                    destination=airport.getAttributeFromLine(str,2);
+                    //int dateOfTakingOff[8];
+                    //int timeOfTakingOff[4]; 
+                    price=stod(airport.getAttributeFromLine(str,5));      
+                    airlineCompany=airport.getAttributeFromLine(str,6); 
+                    numberOfSeats=stoi(airport.getAttributeFromLine(str,7));     
+                    //string* crew;
+                    //int sizeOfTheCrew;
+                }   
+            }
+
+            if(this->flightNum=="-1") cout<<"The provided id does not exist"<<endl;
+            file.close();
+        }
+        else{
+            long int input;
+            cout<<"Destination: ";
+            cin>>destination;
+
+            cout<<"Date of taking off (ddmmyyyy): ";
+            cin>>input;
+            int divider=1;
+            for(int i=0;i<8;i++){
+                dateOfTakingOff[i]=(int)(((input % (divider*10))/divider));
+                divider=divider*10;
+            }
+            
+            cout<<"Time of taking off (hhmm): ";
+            cin>>input;
+            divider=1;
+            for(int i=0;i<4;i++){
+                timeOfTakingOff[i]=(int)(((input % (divider*10))/divider));
+                divider=divider*10;
+            }
+            
+            cout<<"Price of the ticket: ";
+            cin>>price;
+            cout<<"Airline Company: ";
+            cin>>airlineCompany;
+            cout<<"Number of seats: ";
+            cin>>numberOfSeats;
+            cout<<"Size of the crew: ";
+            cin>>sizeOfTheCrew;
+            crew= nullptr;
+
+            //adding the object to the file
+            ofstream file;
+            try{ file.open(airport.getfileName());}
+            catch(...){ cout<<"There was an error.";}
+
+            string str="flight,"+flightNum+","+destination+","+to_string(price)+","+airlineCompany+","+to_string(numberOfSeats)+"\n";
+            file<<str<<endl;
+            file.close();
+        }
     }
-    
-    Flight::Flight(string flightNum, Airport airport){
-        this->flightNum="-1";
-
-        string str;
-        //open file
-        ifstream file;
-        try{
-            file.open(airport.getfileName());
-        }
-        catch(...){
-            cout<<"there was an error";
-        }
-        //search for id and assign the attributes
-        while (getline(file,str))
-        {
-            if((airport.typeOfObjectInLine(str)=="flight")&&(airport.getAttributeFromLine(str,1)==flightNum)){
-                this->flightNum=flightNum;
-                destination=airport.getAttributeFromLine(str,2);
-                //int dateOfTakingOff[8];
-                //int timeOfTakingOff[4]; 
-                price=stod(airport.getAttributeFromLine(str,5));      
-                airlineCompany=airport.getAttributeFromLine(str,6); 
-                numberOfSeats=stoi(airport.getAttributeFromLine(str,7));     
-                //string* crew;
-                //int sizeOfTheCrew;
-            }   
-        }
-
-        if(this->flightNum=="-1") cout<<"The provided id does not exist"<<endl;
-
-        file.close();
-    }
-
     
     //*************************************
     //FUNCTIONS FOR CHANGING DATA

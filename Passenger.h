@@ -14,7 +14,6 @@ class Passenger:public Person{
 
     //Constructor
     Passenger(Airport airport,string passport, bool existantPerson);   
-    Passenger(Airport airport, string passport);
     //Destructor
     ~Passenger();
     

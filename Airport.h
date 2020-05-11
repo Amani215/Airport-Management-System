@@ -53,6 +53,8 @@ class Airport{
         bool existantEmployee(string passport)const;
 
         bool existantPassenger(string passport)const;
+
+        bool existantFlight(string flightNum)const;
         //returns the name of the file
         string getfileName() const{return fileName;}
         //returns the type of the object in a line

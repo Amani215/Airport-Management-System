@@ -98,7 +98,7 @@ int Airport::employeesNum() const{
 }
 
 //Shows a flight according to the given id
-void Airport::showFlightData(string flightId) const{
+void Airport::showFlightData(string flightNum) const{
     bool found=false;
 
     string str;
@@ -112,8 +112,8 @@ void Airport::showFlightData(string flightId) const{
     }
 
     while(getline(file,str)){
-        if((this->getAttributeFromLine(str,1)=="flight")&&(this->getAttributeFromLine(str,2)==flightId)){
-            Flight flight(flightId,*this);
+        if((typeOfObjectInLine(str)=="flight")&&(getAttributeFromLine(str,1)==flightNum)){
+            Flight flight(*this,flightNum);
             flight.showFlightData();
             found=true;
         }
@@ -163,7 +163,7 @@ void Airport::changeFlightData(){
     string input;
     cout<<"Please give the id of the flight: ";
     cin>>input;
-    Flight flight(input,*this);
+    Flight flight(*this,input);
     //change the flight with that id in the file
 }
 
@@ -215,6 +215,24 @@ bool Airport::existantPassenger(string passport)const{
     return false;
 }
 
+bool Airport::existantFlight(string flightNum)const{
+    ifstream file;
+    try{
+        file.open(fileName);
+    }
+    catch(...){
+        cout<<"Could not open file"<<endl;
+    }
+
+    string str;
+    while (getline(file, str)){
+        if((typeOfObjectInLine(str)=="flight")&&(flightNum==getAttributeFromLine(str,1))){
+            file.close();
+            return true;
+        }
+    }
+    return false;
+}
 //returns the type of the object in the line
 string Airport::typeOfObjectInLine(string str)const{
     char temp[10]="";

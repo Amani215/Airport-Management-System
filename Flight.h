@@ -20,8 +20,7 @@ class Flight{
     //CONSTRUCTORS & DESTRUCTORS
 
     //Default constructor
-    Flight(Airport airport);
-    Flight(string flightNum, Airport airport);
+    Flight(Airport airport,string flightNum);
     //Destructor
     ~Flight(){}
     

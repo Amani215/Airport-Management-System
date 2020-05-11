@@ -69,8 +69,6 @@ Passenger::Passenger(Airport airport,string passport, bool existantPerson)
     }
 }
 
-//Passenger::Passenger(Airport airport,string passport):Person(){}
-
 //Destructor
 Passenger::~Passenger(){}
 

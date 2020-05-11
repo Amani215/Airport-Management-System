@@ -14,7 +14,6 @@ class Person{
 
     //Constructor
     Person(Airport airport, string passport, bool existantPerson);
-    Person(){}//this constructor is implemented inside the sub-classes constructors*****************
     //Destructor
     ~Person();
     
@@ -27,18 +26,10 @@ class Person{
 
     //change the data 
     void changeData();
-
-    //OTHER FUNCTIONS
-
-    //returns true if the person doesn't exist in the database
-    bool newPerson(Airport airport) const;
-    //returns the Person with the id from the airport
-    void getPerson(Airport airport);//*******************************************
 };
 
 //************************************************************************************
 //                                      ISSUES
 //************************************************************************************
 //*cannot read strings with spaces
-//*change the data of a person in general?
 
