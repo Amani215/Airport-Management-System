@@ -21,7 +21,7 @@ Airport::Airport(){
     
     password="admin";
     
-    fileName=airportName+"-"+location+".csv";
+    fileName=airportName+"-"+location+".txt";
 }
 
 
@@ -245,8 +245,20 @@ string Airport::typeOfObjectInLine(string str)const{
     return temp;
 }
 
+int Airport::numberOfAttributesInLine(string str)const{//******************************************
+    int i=0,counter=0;
+    while(str[i]!='\n'){
+        while((str[i]!=',')&&(str[i]!='\n')){
+            i++;
+        }
+        counter++;
+        if (str[i]!='\n') i++;
+    }
+    return counter;
+}
+
 string Airport::getAttributeFromLine(string str,int orderOfTheAttribute)const{
-    char attribute[50];
+    char attribute[50]="";
     int j=0, i=0;
     do{
         while (str[i]!=','){
@@ -256,7 +268,7 @@ string Airport::getAttributeFromLine(string str,int orderOfTheAttribute)const{
         i++;
     }while (j<orderOfTheAttribute);
     j=0;
-    while (str[i]!=','){
+    while ((str[i]!=',')){
         attribute[j]=str[i];
         j++;
         i++;

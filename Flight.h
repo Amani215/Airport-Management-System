@@ -2,6 +2,7 @@
 
 #include<iostream>
 #include<string>
+#include <time.h>
 #include "Airport.h"
 
 using namespace std;
@@ -9,8 +10,9 @@ using namespace std;
 class Flight{
     string flightNum;       //flight ID 
     string destination;     //destination of the flight
-    int dateOfTakingOff[8]; //date of the flight stored in a table (ddmmyyyy)
-    int timeOfTakingOff[4]; //time of the flight stored in a table (hhmm)
+    //int dateOfTakingOff[8]; //date of the flight stored in a table (ddmmyyyy)
+    //int timeOfTakingOff[4]; //time of the flight stored in a table (hhmm)
+    struct tm timeOfTakingOff;
     double price;           //price in forints
     string airlineCompany;  //name of the airline company
     int numberOfSeats;      //number of seats of the airplane
@@ -53,10 +55,12 @@ class Flight{
     void showDate() const;
     //Shows the time of taking off
     void showTime() const;
+
+    void stringToTime(string str);
     //Shows the list of the Crew
     void showCrew() const;
 
-    int getSizeOfTheCrew(string str)const;
+    int getSizeOfTheCrew(Airport airport, string str)const;
     
     string crewToString(const Flight& flight)const;
 };
