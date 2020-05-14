@@ -28,6 +28,22 @@ class Flight{
 
     //fills the table of the crew with names of the members
     void fillTheCrew();
+
+    void fillTheCrew(Airport airport,string str);
+    //this change the attributes aprt from the flightNum and the destination which will always be constant
+    void changeFlightData(string flightNum);
+    //set the date of taking off to a new one
+    void setDate(string flightNum);
+    //set the time of taking off to a new one
+    void setTime(string flightNum);
+    //set the price of the flight
+    void setPrice(string flightNum);
+    //set the airline Company
+    void setAirlineCompany(string flightNum);
+    //set the number of seats in the plane
+    void setNumberOfSeats(string flightNum);
+    //change the crew data
+    void changeCrew(string flightNum);
     
     //FUNCTIONS FOR SHOWING THE DATA
 
@@ -39,4 +55,8 @@ class Flight{
     void showTime() const;
     //Shows the list of the Crew
     void showCrew() const;
+
+    int getSizeOfTheCrew(string str)const;
+    
+    string crewToString(const Flight& flight)const;
 };
