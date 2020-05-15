@@ -1,4 +1,3 @@
 passenger,sss,ss,1,sss,0,0
 employee,zzz,zz,1,zz,300000.000000
 employee,,,-227647744,,300000.000000
-flight,zzz,zz,12.000000,zzz,22

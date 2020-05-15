@@ -69,3 +69,7 @@ void Person::changeData(){
     cin>>input;
     if(input!="0") passport=input;
 }
+
+string Person::getName()const{ return name;}
+
+string Person::getPassport()const{return passport;}

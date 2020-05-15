@@ -158,7 +158,7 @@ void Airport::changeFlightData(){
     Flight flight(*this,input);
     //change the flight with that id in the file
     if(existantFlight(input)){ 
-        flight.changeFlightData(input);
+        flight.changeFlightData(*this,input);
     }
 }
 

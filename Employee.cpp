@@ -90,6 +90,7 @@ void Employee::menu(Airport airport)const{
            //execute the user's choice
            switch(option){
                case 1://Done
+                    cout<<"--My Personal Data--"<<endl;
                     employee.printData();
                     break;
                case 2://Done
@@ -130,12 +131,11 @@ void Employee::menu(Airport airport)const{
 //OPTION 1
 //prints the data of the employee
 void Employee::printData()const{
-    cout<<"--My Personal Data--"<<endl;
-    cout<<"Passport number: "<<passport<<endl;
-    cout<<"Name: "<<name<<endl;
-    cout<<"Age: "<<age<<endl;
-    cout<<"Nationality: "<<nationality<<endl;
-    cout<<"Salary: "<<salary<<" ft"<<endl;
+    cout<<"    Passport number: "<<passport<<endl;
+    cout<<"    Name: "<<name<<endl;
+    cout<<"    Age: "<<age<<endl;
+    cout<<"    Nationality: "<<nationality<<endl;
+    cout<<"    Salary: "<<salary<<" ft"<<endl;
 }
 
 //OPTION 4: 

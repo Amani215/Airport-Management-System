@@ -26,6 +26,10 @@ class Person{
 
     //change the data 
     void changeData();
+
+    string getName()const;
+
+    string getPassport()const;
 };
 
 //************************************************************************************

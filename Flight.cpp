@@ -30,8 +30,8 @@ using namespace std;
                     readTime(airport,timeOfTakingOff);
                     price=stod(airport.getAttributeFromLine(str,5));      
                     airlineCompany=airport.getAttributeFromLine(str,6); 
-                    numberOfSeats=stoi(airport.getAttributeFromLine(str,7));     
-                    //fillTheCrew(airport,str);
+                    numberOfSeats=stoi(airport.getAttributeFromLine(str,7));   
+                    pilotPassport=airport.getAttributeFromLine(str,8);
                 }   
             }
 
@@ -72,34 +72,21 @@ using namespace std;
             cin>>airlineCompany;
             cout<<"Number of seats: ";
             cin>>numberOfSeats;
-            cout<<"Size of the crew: ";
-            cin>>sizeOfTheCrew;
-            crew= nullptr;
+
+            string pilot;
+            cout<<"Pilot passport number: ";
+            setPilot(airport);
 
             //adding the object to the file
             ofstream file;
             try{ file.open(airport.getfileName(),ios::app);}
             catch(...){ cout<<"There was an error.";}
 
-            //convert the time to a string
-            //char* timeString;
-            //strftime(timeString,20,"%d:%m:%Y:%H:%M", timeOfTakingOff);
-            
-            /*time_t rawtime=mktime(timeOfTakingOff);
-            struct tm * timeinfo;
-            char buffer [80];
-            time (&rawtime);
-            timeinfo = localtime (&rawtime);
-            strftime(buffer,80,"%d:%m:%Y:%H:%M", timeinfo);
-            cout<<buffer<<endl;*/
-
             //put the data in the file
             string str="flight,"+flightNum+","+destination+",";
             file<<str;
             writeTime(airport,timeOfTakingOff);
-            str=","+to_string(price)+","+airlineCompany+","+to_string(numberOfSeats);
-            //string crewMembers=crewToString(*this);
-            //str+=crewMembers;
+            str=","+to_string(price)+","+airlineCompany+","+to_string(numberOfSeats)+","+pilot;
             cout<<"here"<<endl;
             file<<str<<endl; 
             file.close();
@@ -110,40 +97,17 @@ using namespace std;
     //FUNCTIONS FOR CHANGING DATA
     //*************************************
 
-    //fills the table of the crew with names of the members
-    void Flight::fillTheCrew(){
-        crew=new string[sizeOfTheCrew];
-        
-        for(int i=0; i<sizeOfTheCrew;i++){
-            cout<<"Name of member "<<i<<": ";
-            cin>>crew[i];
-        }
-    }
-
-    //fills the crew from an existant flight in file
-    void Flight::fillTheCrew(Airport airport,string str){
-        int i=0;
-        sizeOfTheCrew=getSizeOfTheCrew(airport,str);
-        crew=new string[sizeOfTheCrew];
-        while(i<sizeOfTheCrew){
-            crew[i]=airport.getAttributeFromLine(str,8+i);
-            i++;
-        }
-    }
-
-    void Flight::changeFlightData(string flightNum){
+    void Flight::changeFlightData(Airport airport, string flightNum){
         cout<<"If you don't want to change an attribute please type it again"<<endl;
         //setDate(flightNum);
         setTime(flightNum);
         setPrice(flightNum);
         setAirlineCompany(flightNum);
         setNumberOfSeats(flightNum);
-        cout<<"Current crew:"<<endl;
-        showCrew();
-        int answer;
-        cout<<"Do you want to change it? (Press 1 if yes, 0 if no"<<endl;
-        cin>>answer;
-        if(answer==1) changeCrew(flightNum);
+        Employee employee(airport,pilotPassport,true);
+        cout<<"Current pilot is "<<employee.getName()<<" with passport number "<<employee.getPassport()<<endl;
+        cout<<"Change it to: ";
+        setPilot(airport);
 
         cout<<endl<<"Changes are done!"<<endl;
     }
@@ -190,9 +154,25 @@ using namespace std;
         cout<<"Current number of seats: "<<numberOfSeats<<" change it to:";
         cin>>numberOfSeats;
     }
-    //change the crew data
-    void Flight::changeCrew(string flightNum){//***********************************************
 
+    void Flight::setPilot(Airport airport){
+        string pilot;
+        cin>>pilot;
+        if(!airport.existantEmployee(pilot)) {
+            int input;
+            do{
+                cout<<"This passport number doesn't exist in the employees database. Do you want to add it?"<<endl;
+                cout<<" 0.No"<<endl<<" 1.Yes"<<endl;
+                cin>>input;
+                if(input==1) Employee newEmployee(airport,pilot,false);
+                else
+                {
+                    cout<<"Please give a new passport number"<<endl;
+                    cin>>pilot;
+                } 
+            }while(!airport.existantEmployee(pilot)); 
+        }
+        pilotPassport=pilot;
     }
 
     //*************************************
@@ -200,20 +180,18 @@ using namespace std;
     //*************************************
 
     //shows the data of the flight
-    void Flight::showFlightData() const{
+    void Flight::showFlightData(Airport airport) const{
         cout<<"Flight Number: "<<flightNum<<endl;
-        cout<<"     Destination: "<<destination<<endl;
-        /*cout<<"     Date of taking off: ";
-        showDate();
-        cout<<endl;*/
-        cout<<"     Time of taking off: ";
+        cout<<" Destination: "<<destination<<endl;
+        cout<<" Time of taking off: ";
         showTime();
         cout<<endl;
-        cout<<"     Price: "<<price<<endl;
-        cout<<"     Airline Company: "<<airlineCompany<<endl;
-        cout<<"     Number of seats: "<<numberOfSeats<<endl;
-        cout<<"     Crew list:"<<endl;
-        showCrew();
+        cout<<" Price: "<<price<<endl;
+        cout<<" Airline Company: "<<airlineCompany<<endl;
+        cout<<" Number of seats: "<<numberOfSeats<<endl;
+        cout<<" Pilot: "<<endl;
+        Employee pilot(airport, pilotPassport,true);
+        pilot.printData();
     }
     
     //Shows the time of taking off
@@ -283,36 +261,4 @@ using namespace std;
             time->tm_min=inMin;
         }
         finC.close();	
-    }
-
-    //Shows the list of the Crew
-    void Flight::showCrew() const{
-        if(crew){
-            for(int i=0;i<sizeOfTheCrew;i++){
-                cout<<"         "<<i<<". "<<crew[i]<<endl;
-            }
-        }else{
-            cout<<"         There are no names yet..."<<endl;
-        }
-    }
-
-    int Flight::getSizeOfTheCrew(Airport airport, string str)const{
-        return (airport.numberOfAttributesInLine(str)-8);
-    }
-
-    string Flight::crewToString(const Flight& flight)const{
-        int i=0;
-        string result="";
-        if(crew){
-            while(i<flight.sizeOfTheCrew){
-                if(i<flight.sizeOfTheCrew-1)
-                    result+=flight.crew[i]+",";
-                else
-                    result+=flight.crew[i];
-                i++;
-            }
-        }
-        else 
-            result="0";
-        return result;
     }

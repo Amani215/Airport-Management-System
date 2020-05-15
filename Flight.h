@@ -4,6 +4,7 @@
 #include<string>
 #include <time.h>
 #include "Airport.h"
+#include "Employee.h"
 
 using namespace std;
 
@@ -16,8 +17,7 @@ class Flight{
     double price;           //price in forints
     string airlineCompany;  //name of the airline company
     int numberOfSeats;      //number of seats of the airplane
-    string* crew;           //table of the names of the crew 
-    int sizeOfTheCrew;      //number of people in the crew
+    string pilotPassport;   //pilot for the flight
   public:
     //CONSTRUCTORS & DESTRUCTORS
 
@@ -28,12 +28,8 @@ class Flight{
     
     //FUNCTIONS FOR CHANGING THE DATA
 
-    //fills the table of the crew with names of the members
-    void fillTheCrew();
-
-    void fillTheCrew(Airport airport,string str);
     //this change the attributes aprt from the flightNum and the destination which will always be constant
-    void changeFlightData(string flightNum);
+    void changeFlightData(Airport airport, string flightNum);
     //set the date of taking off to a new one
     void setDate(string flightNum);
     //set the time of taking off to a new one
@@ -44,13 +40,13 @@ class Flight{
     void setAirlineCompany(string flightNum);
     //set the number of seats in the plane
     void setNumberOfSeats(string flightNum);
-    //change the crew data
-    void changeCrew(string flightNum);
+
+    void setPilot(Airport airport);
     
     //FUNCTIONS FOR SHOWING THE DATA
 
     //shows the data of the flight
-    void showFlightData() const;
+    void showFlightData(Airport airport) const;
     //Shows the date of taking off
     void showDate() const;
     //Shows the time of taking off
@@ -61,10 +57,4 @@ class Flight{
     void writeTime(Airport airport, tm* time);
 
     void readTime(Airport airport, tm* time);
-    //Shows the list of the Crew
-    void showCrew() const;
-
-    int getSizeOfTheCrew(Airport airport, string str)const;
-    
-    string crewToString(const Flight& flight)const;
 };
