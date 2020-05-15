@@ -10,7 +10,7 @@ using namespace std;
     //*************************************
 
     //Default constructor
-    Flight::Flight(Airport airport,string flightNum):flightNum(flightNum){
+    Flight::Flight(Airport airport,string flightNum){
         if(airport.existantFlight(flightNum)){
             this->flightNum="-1";
             string str;
@@ -26,13 +26,12 @@ using namespace std;
                 if((airport.typeOfObjectInLine(str)=="flight")&&(airport.getAttributeFromLine(str,1)==flightNum)){
                     this->flightNum=flightNum;
                     destination=airport.getAttributeFromLine(str,2);
-                    //int dateOfTakingOff[8];
-                    //int timeOfTakingOff[4]; 
-                    stringToTime(str);
+                    //stringToTime(str);
+                    readTime(airport,timeOfTakingOff);
                     price=stod(airport.getAttributeFromLine(str,5));      
                     airlineCompany=airport.getAttributeFromLine(str,6); 
                     numberOfSeats=stoi(airport.getAttributeFromLine(str,7));     
-                    fillTheCrew(airport,str);
+                    //fillTheCrew(airport,str);
                 }   
             }
 
@@ -41,44 +40,31 @@ using namespace std;
         }
         else{
             int input;
+
+            this->flightNum=flightNum;
+
             cout<<"Destination: ";
             cin>>destination;
 
-            /*cout<<"Date of taking off (ddmmyyyy): ";
-            cin>>input;
-            int divider=1;
-            for(int i=0;i<8;i++){
-                dateOfTakingOff[i]=(int)(((input % (divider*10))/divider));
-                divider=divider*10;
-            }
-            
-            cout<<"Time of taking off (hhmm): ";
-            cin>>input;
-            divider=1;
-            for(int i=0;i<4;i++){
-                timeOfTakingOff[i]=(int)(((input % (divider*10))/divider));
-                divider=divider*10;
-            }*/
-
             cout<<"Day of Taking off: ";
             cin>>input;
-            timeOfTakingOff.tm_mday=input;
+            timeOfTakingOff->tm_mday=input;
 
             cout<<"Month of Taking off: ";
             cin>>input;
-            timeOfTakingOff.tm_mon=input-1;//Because 0<=tm_mon<=11
+            timeOfTakingOff->tm_mon=input-1;//Because 0<=tm_mon<=11
 
             cout<<"Year of Taking off: ";
             cin>>input;
-            timeOfTakingOff.tm_year=input;
+            timeOfTakingOff->tm_year=input;
 
             cout<<"Hour of Taking off: ";
             cin>>input;
-            timeOfTakingOff.tm_hour=input;
+            timeOfTakingOff->tm_hour=input;
 
             cout<<"Minute of Taking off: ";
             cin>>input;
-            timeOfTakingOff.tm_min=input;
+            timeOfTakingOff->tm_min=input;
             
             cout<<"Price of the ticket: ";
             cin>>price;
@@ -92,16 +78,30 @@ using namespace std;
 
             //adding the object to the file
             ofstream file;
-            try{ file.open(airport.getfileName());}
+            try{ file.open(airport.getfileName(),ios::app);}
             catch(...){ cout<<"There was an error.";}
 
             //convert the time to a string
-            char* timeString;
-            strftime(timeString, 13, "%d:%m:%Y:%H:%M", &timeOfTakingOff);
+            //char* timeString;
+            //strftime(timeString,20,"%d:%m:%Y:%H:%M", timeOfTakingOff);
+            
+            /*time_t rawtime=mktime(timeOfTakingOff);
+            struct tm * timeinfo;
+            char buffer [80];
+            time (&rawtime);
+            timeinfo = localtime (&rawtime);
+            strftime(buffer,80,"%d:%m:%Y:%H:%M", timeinfo);
+            cout<<buffer<<endl;*/
+
             //put the data in the file
-            string str="flight,"+flightNum+","+destination+","+timeString+","+to_string(price)+","+airlineCompany+","+to_string(numberOfSeats)+",";
-            string crewMembers=crewToString(*this);
-            file<<str<<crewMembers<<endl;
+            string str="flight,"+flightNum+","+destination+",";
+            file<<str;
+            writeTime(airport,timeOfTakingOff);
+            str=","+to_string(price)+","+airlineCompany+","+to_string(numberOfSeats);
+            //string crewMembers=crewToString(*this);
+            //str+=crewMembers;
+            cout<<"here"<<endl;
+            file<<str<<endl; 
             file.close();
         }
     }
@@ -133,7 +133,7 @@ using namespace std;
 
     void Flight::changeFlightData(string flightNum){
         cout<<"If you don't want to change an attribute please type it again"<<endl;
-        setDate(flightNum);
+        //setDate(flightNum);
         setTime(flightNum);
         setPrice(flightNum);
         setAirlineCompany(flightNum);
@@ -148,12 +148,6 @@ using namespace std;
         cout<<endl<<"Changes are done!"<<endl;
     }
 
-    //set the date of taking off to a new one
-    /*void Flight::setDate(string flightNum){
-        cout<<"Current date of taking off: ";
-        showDate();
-        cout<<" change it to: ";
-    }*/
     //set the time of taking off to a new one
     void Flight::setTime(string flightNum){//*************************************
         int input;
@@ -162,23 +156,23 @@ using namespace std;
         cout<<" change it to: ";
         cout<<"Day of Taking off: ";
         cin>>input;
-        timeOfTakingOff.tm_mday=input;
+        timeOfTakingOff->tm_mday=input;
 
         cout<<"Month of Taking off: ";
         cin>>input;
-        timeOfTakingOff.tm_mon=input;
+        timeOfTakingOff->tm_mon=input;
 
         cout<<"Year of Taking off: ";
         cin>>input;
-        timeOfTakingOff.tm_year=input;
+        timeOfTakingOff->tm_year=input;
 
         cout<<"Hour of Taking off: ";
         cin>>input;
-        timeOfTakingOff.tm_hour=input;
+        timeOfTakingOff->tm_hour=input;
 
         cout<<"Minute of Taking off: ";
         cin>>input;
-        timeOfTakingOff.tm_min=input;
+        timeOfTakingOff->tm_min=input;
         //insert it in file
     }
     //set the price of the flight
@@ -197,7 +191,7 @@ using namespace std;
         cin>>numberOfSeats;
     }
     //change the crew data
-    void Flight::changeCrew(string flightNum){
+    void Flight::changeCrew(string flightNum){//***********************************************
 
     }
 
@@ -209,9 +203,9 @@ using namespace std;
     void Flight::showFlightData() const{
         cout<<"Flight Number: "<<flightNum<<endl;
         cout<<"     Destination: "<<destination<<endl;
-        cout<<"     Date of taking off: ";
+        /*cout<<"     Date of taking off: ";
         showDate();
-        cout<<endl;
+        cout<<endl;*/
         cout<<"     Time of taking off: ";
         showTime();
         cout<<endl;
@@ -222,22 +216,10 @@ using namespace std;
         showCrew();
     }
     
-    //Shows the date of taking off
-    /*void Flight::showDate() const{
-        for(int i=0;i<8;i++){
-            if((i==2)||(i==4)) cout<<"-";
-            cout<<dateOfTakingOff[i];
-        }
-    }*/
-    
     //Shows the time of taking off
     void Flight::showTime() const{
-        /*for(int i=0;i<4;i++){
-            if(i==2) cout<<":";
-            cout<<timeOfTakingOff[i];
-        }*/
-        cout<<timeOfTakingOff.tm_mday<<"-"<<timeOfTakingOff.tm_mon+1<<"-"<<timeOfTakingOff.tm_year<<" ";
-        cout<<timeOfTakingOff.tm_hour<<":"<<timeOfTakingOff.tm_min<<endl;
+        cout<<timeOfTakingOff->tm_mday<<"-"<<timeOfTakingOff->tm_mon+1<<"-"<<timeOfTakingOff->tm_year<<" ";
+        cout<<timeOfTakingOff->tm_hour<<":"<<timeOfTakingOff->tm_min<<endl;
     }
     
     int positionOfColon(string str, int colonNumber){
@@ -250,11 +232,57 @@ using namespace std;
     }
 
     void Flight::stringToTime(string str){
-        timeOfTakingOff.tm_mday= stoi(str.substr(0,positionOfColon(str,1)-1));
-        timeOfTakingOff.tm_mon= stoi(str.substr(positionOfColon(str,1)+1,positionOfColon(str,2)-1));
-        timeOfTakingOff.tm_year= stoi(str.substr(positionOfColon(str,2)+1,positionOfColon(str,3)-1));
-        timeOfTakingOff.tm_hour= stoi(str.substr(positionOfColon(str,3)+1,positionOfColon(str,4)-1));
-        timeOfTakingOff.tm_hour= stoi(str.substr(positionOfColon(str,4)+1,str.length()-1));
+        timeOfTakingOff->tm_mday= stoi(str.substr(0,positionOfColon(str,1)-1));
+        timeOfTakingOff->tm_mon= stoi(str.substr(positionOfColon(str,1)+1,positionOfColon(str,2)-1));
+        timeOfTakingOff->tm_year= stoi(str.substr(positionOfColon(str,2)+1,positionOfColon(str,3)-1));
+        timeOfTakingOff->tm_hour= stoi(str.substr(positionOfColon(str,3)+1,positionOfColon(str,4)-1));
+        timeOfTakingOff->tm_hour= stoi(str.substr(positionOfColon(str,4)+1,str.length()-1));
+    }
+
+    void Flight::writeTime(Airport airport, tm* time){	//from includehelp.com
+        char str[20];
+        
+        fstream file;
+        file.open(airport.getfileName(), ios::out|ios::binary);
+
+        if(!file){
+            cout<<"Error in creating file!!!"<<endl;
+            return;
+        }
+
+        //make string to write
+        sprintf(str,"%02d:%02d:%04d:%02d:%02d",time->tm_mday,time->tm_mon,time->tm_year,time->tm_hour,time->tm_min);
+
+        //write into file
+        file.write(str,sizeof(str));
+        cout<<"Time "<<str<<" has been written into file."<<endl;
+        
+        //close the file
+        file.close();
+    }
+
+    //function to read time from the file
+    void Flight::readTime(Airport airport, tm* time){//from includehelp.com
+        char str[20];
+        int inD,inMon,inY,inH,inMin;
+
+        fstream finC;
+        finC.open(airport.getfileName(),ios::in|ios::binary);
+        if(!finC){
+            cout<<"Error in file opening..."<<endl;
+            return;
+        }
+        if(finC.read((char*)str,sizeof(str))){
+            //extract time values from the file
+            sscanf(str,"%02:%02:%04d:%02d:%02d",&inD,&inMon,&inY,&inH,&inMin);
+            //assign time into variables, which are passing in function
+            time->tm_mday=inD;
+            time->tm_mon=inMon;
+            time->tm_year=inY;
+            time->tm_hour=inH;
+            time->tm_min=inMin;
+        }
+        finC.close();	
     }
 
     //Shows the list of the Crew
@@ -269,7 +297,7 @@ using namespace std;
     }
 
     int Flight::getSizeOfTheCrew(Airport airport, string str)const{
-        return (airport.numberOfAttributesInLine(str)-7);
+        return (airport.numberOfAttributesInLine(str)-8);
     }
 
     string Flight::crewToString(const Flight& flight)const{

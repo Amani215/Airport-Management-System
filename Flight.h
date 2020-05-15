@@ -12,7 +12,7 @@ class Flight{
     string destination;     //destination of the flight
     //int dateOfTakingOff[8]; //date of the flight stored in a table (ddmmyyyy)
     //int timeOfTakingOff[4]; //time of the flight stored in a table (hhmm)
-    struct tm timeOfTakingOff;
+    struct tm* timeOfTakingOff;
     double price;           //price in forints
     string airlineCompany;  //name of the airline company
     int numberOfSeats;      //number of seats of the airplane
@@ -57,6 +57,10 @@ class Flight{
     void showTime() const;
 
     void stringToTime(string str);
+
+    void writeTime(Airport airport, tm* time);
+
+    void readTime(Airport airport, tm* time);
     //Shows the list of the Crew
     void showCrew() const;
 

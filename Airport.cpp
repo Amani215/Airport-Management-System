@@ -38,7 +38,6 @@ void Airport::showAirportData() const{
     cout<<"Flights:"<<endl;
     flightsData();
 }
-
 //Shows all the General Data of the Airport and the password
 void Airport::showAirportDataPersonnel() const{
     cout<<"--"<<airportName<<" Airport General Data--"<<endl;
@@ -49,10 +48,8 @@ void Airport::showAirportDataPersonnel() const{
     cout<<"Flights:"<<endl;
     flightsData();
 }
-
 //Shows the password
 void Airport::showPassword()const{ cout<<"Password: "<<password<<endl; }
-
 //returns the number of registered passengers in the airport
 int Airport::passengersNum() const{
     string str;
@@ -74,7 +71,6 @@ int Airport::passengersNum() const{
     //return the number
     return counter;
 }
-
 //returns the number of registered employees in the airport
 int Airport::employeesNum() const{
     string str;
@@ -96,7 +92,6 @@ int Airport::employeesNum() const{
     //return the number
     return counter;
 }
-
 //Shows a flight according to the given id
 void Airport::showFlightData(string flightNum) const{
     bool found=false;
@@ -120,7 +115,6 @@ void Airport::showFlightData(string flightNum) const{
     }
     if(found==false) cout<<"There's no flight with such an id"<<endl;
 }
-
 //prints the data of each flight registered in the airport
 void Airport::flightsData() const{
     string str;
@@ -150,14 +144,12 @@ void Airport::setPassword(){
     cin>>password;
     //Change it in the file
 }
-
 //Change the name of the airport***********************************************
 void Airport::setAirportName(){
     cout<<"The current name is "<<airportName<<", please set the new one: ";
     cin>>airportName;
     //change the filename and copy the old file in the new one
 }
-
 //Change a flight data according to the given id
 void Airport::changeFlightData(){
     string input;
@@ -165,6 +157,9 @@ void Airport::changeFlightData(){
     cin>>input;
     Flight flight(*this,input);
     //change the flight with that id in the file
+    if(existantFlight(input)){ 
+        flight.changeFlightData(input);
+    }
 }
 
 
