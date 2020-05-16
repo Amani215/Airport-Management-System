@@ -1,0 +1,7 @@
+- when the passenger adds a flight check if it exists in the database
+- change the time to string (you don't even need to use time since you don't have time operations and it's just for information purpose)
+- finish the functions related to changing data
+- add at least one dynamic memory management
+- exception handling
+- add the const keyword where needed
+- comments

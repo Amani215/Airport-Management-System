@@ -109,7 +109,7 @@ void Airport::showFlightData(string flightNum) const{
     while(getline(file,str)){
         if((typeOfObjectInLine(str)=="flight")&&(getAttributeFromLine(str,1)==flightNum)){
             Flight flight(*this,flightNum);
-            flight.showFlightData();
+            flight.showFlightData(*this);
             found=true;
         }
     }

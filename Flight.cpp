@@ -220,11 +220,11 @@ using namespace std;
     void Flight::writeTime(Airport airport, tm* time){	//from includehelp.com
         char str[20];
         
-        fstream file;
-        file.open(airport.getfileName(), ios::out|ios::binary);
+        ofstream file;
+        file.open(airport.getfileName(), ios::app);
 
         if(!file){
-            cout<<"Error in creating file!!!"<<endl;
+            cout<<"Error in opening file!!!"<<endl;
             return;
         }
 
@@ -244,15 +244,15 @@ using namespace std;
         char str[20];
         int inD,inMon,inY,inH,inMin;
 
-        fstream finC;
-        finC.open(airport.getfileName(),ios::in|ios::binary);
+        ifstream finC;
+        finC.open(airport.getfileName());
         if(!finC){
             cout<<"Error in file opening..."<<endl;
             return;
         }
         if(finC.read((char*)str,sizeof(str))){
             //extract time values from the file
-            sscanf(str,"%02:%02:%04d:%02d:%02d",&inD,&inMon,&inY,&inH,&inMin);
+            sscanf(str,"%02d%02d%04d%02d%02d",&inD,&inMon,&inY,&inH,&inMin);
             //assign time into variables, which are passing in function
             time->tm_mday=inD;
             time->tm_mon=inMon;
