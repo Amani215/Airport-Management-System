@@ -3,6 +3,7 @@
 #include <string>
 #include "Employee.h"
 #include "Person.h"
+#include "fileManagement.h"
 
 using namespace std;
 
@@ -42,17 +43,9 @@ Employee::Employee(Airport airport,string passport, bool existantPerson)
      }
      else{
           salary=300000;
-          ofstream file;
-          try{
-               file.open(airport.getfileName(),ios::app);
-          }
-          catch(...){
-               cout<<"There was an error.";
-          }
+          FileManagement file(airport.getfileName());
           string str="employee,"+passport+","+name+","+to_string(age)+","+nationality+","+to_string(salary)+"\n";
-          file<<str;
-
-          file.close();
+          file.write(str);
      }
 }
 
@@ -101,7 +94,6 @@ void Employee::menu(Airport airport)const{
                     break;
                case 4://Done
                     employee.changeData();
-                    employee.setSalary();
                     break;
                case 5://Done (file handling)
                     airport.setAirportName();
@@ -140,7 +132,10 @@ void Employee::printData()const{
 
 //OPTION 4: 
 //change the data
-void Employee::changeData(){ Person::changeData(); }
+void Employee::changeData(){ //***************************
+     Person::changeData(); 
+     setSalary();
+}
 //change the salary
 void Employee::setSalary(){
      double input;

@@ -3,6 +3,7 @@
 #include "Passenger.h"
 #include "Airport.h"
 #include "Flight.h"
+#include "fileManagement.h"
 
 using namespace std;
 
@@ -74,17 +75,9 @@ Passenger::Passenger(Airport airport,string passport, bool existantPerson)
                 cin>>flightSeat;
             }
         }
-        ofstream file;
-        try{
-            file.open(airport.getfileName(),ios::app);
-        }
-        catch(...){
-            cout<<"There was an error.";
-        }
-        string str="passenger,"+passport+","+name+","+to_string(age)+","+nationality+","+flightNum+","+flightSeat+"\n";
-        file<<str;
-
-        file.close();
+        FileManagement file(airport.getfileName());
+        string str="passenger,"+passport+","+name+","+to_string(age)+","+nationality+","+flightNum+","+flightSeat;
+        file.write(str);
     }
 }
  
@@ -162,7 +155,7 @@ void Passenger::printData()const{
 }
 
 //Option 5: Change Flight Data
-void Passenger::setMyFlightData(Airport airport){
+void Passenger::setMyFlightData(Airport airport){//*******************************************
     cout<<"Current flight number: "<<flightNum<<endl;
     cout<<"New Flight ID (if you don't want to change it please write it again): ";
     cin>>flightNum;
@@ -190,4 +183,23 @@ void Passenger::setMyFlightData(Airport airport){
         cout<<"New seat (if you don't want to change it please write it again): ";
         cin>>flightSeat;
     }
+
+    string attributes="passenger,"+passport+","+name+","+to_string(age)+","+nationality+","+flightNum+","+flightSeat;
+    ifstream file;
+    string str;
+    try{file.open(airport.getfileName());}
+    catch(...){
+        cout<<"Could not open file!"<<endl;
+        throw exception();
+    }
+    int line=-1;
+    while(getline(file,str)){
+        line++;
+        if((airport.typeOfObjectInLine(str)=="flight")&&(airport.getAttributeFromLine(str,1)==flightNum)){
+            break;
+        }
+    }
+    file.close();
+    FileManagement newFile(airport.getfileName());
+    newFile.modify(attributes,line);
 }

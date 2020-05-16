@@ -3,6 +3,7 @@
 #include<string> 
 #include "Airport.h"
 #include "Flight.h"
+#include "fileManagement.h"
 
 using namespace std;
 
@@ -147,27 +148,31 @@ void Airport::flightsData() const{
 //*********************************************
 
 //Change the password
-void Airport::setPassword(){//************************************
+void Airport::setPassword(){
     cout<<"New password: ";
     cin>>password;
     //Change it in the file
+    FileManagement newFile(fileName);
+    newFile.modify("password,"+password,0);
+
 }
-//Change the name of the airport***********************************************
+//Change the name of the airport
 void Airport::setAirportName(){
     cout<<"The current name is "<<airportName<<", please set the new one: ";
     cin>>airportName;
     //change the filename and copy the old file in the new one
+    rename(fileName.c_str(),(airportName+"-"+location+".txt").c_str());
 }
 //Change a flight data according to the given id
-void Airport::changeFlightData(){//************************************************
+void Airport::changeFlightData(){
     string input;
     cout<<"Please give the id of the flight: ";
     cin>>input;
     Flight flight(*this,input);
     //change the flight with that id in the file
-    /*if(existantFlight(input)){ 
+    if(existantFlight(input)){ 
         flight.changeFlightData(*this,input);
-    }*/
+    }
 }
 
 
