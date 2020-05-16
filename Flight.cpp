@@ -27,7 +27,7 @@ using namespace std;
                     this->flightNum=flightNum;
                     destination=airport.getAttributeFromLine(str,2);
                     //stringToTime(str);
-                    readTime(airport,timeOfTakingOff);
+                    //readTime(airport,timeOfTakingOff);
                     price=stod(airport.getAttributeFromLine(str,5));      
                     airlineCompany=airport.getAttributeFromLine(str,6); 
                     numberOfSeats=stoi(airport.getAttributeFromLine(str,7));   
@@ -85,7 +85,7 @@ using namespace std;
             //put the data in the file
             string str="flight,"+flightNum+","+destination+",";
             file<<str;
-            writeTime(airport,timeOfTakingOff);
+            //writeTime(airport,timeOfTakingOff);
             str=","+to_string(price)+","+airlineCompany+","+to_string(numberOfSeats)+","+pilot;
             cout<<"here"<<endl;
             file<<str<<endl; 
@@ -217,7 +217,7 @@ using namespace std;
         timeOfTakingOff->tm_hour= stoi(str.substr(positionOfColon(str,4)+1,str.length()-1));
     }
 
-    void Flight::writeTime(Airport airport, tm* time){	//from includehelp.com
+    /*void Flight::writeTime(Airport airport, tm* time){	//from includehelp.com
         char str[20];
         
         ofstream file;
@@ -237,10 +237,10 @@ using namespace std;
         
         //close the file
         file.close();
-    }
+    }*/
 
     //function to read time from the file
-    void Flight::readTime(Airport airport, tm* time){//from includehelp.com
+    /*void Flight::readTime(Airport airport, tm* time){//from includehelp.com
         char str[20];
         int inD,inMon,inY,inH,inMin;
 
@@ -261,4 +261,4 @@ using namespace std;
             time->tm_min=inMin;
         }
         finC.close();	
-    }
+    }*/

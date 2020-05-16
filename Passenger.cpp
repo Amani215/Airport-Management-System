@@ -51,8 +51,28 @@ Passenger::Passenger(Airport airport,string passport, bool existantPerson)
             flightSeat="0";
         }
         else{
-            cout<<"Please specify your seat number";
-            cin>>flightSeat;
+            if(!airport.existantFlight(flightNum)){
+                do{
+                    int input;
+                    cout<<endl<<"There's no such flight in the database. Do you want to:"<<endl
+                        <<"    1. Wait for updates and set flight to 0"<<endl
+                        <<"    2. Change Flight Number "<<endl;
+                    cin>>input;
+                    if (input==1) {
+                        flightNum="0";
+                        flightSeat="0";
+                        break;
+                    }
+                    else if (input==2){
+                        cout<<"Flight Number: ";
+                        cin>>flightNum;
+                    }
+                }while(!airport.existantFlight(flightNum));
+            }
+            if(airport.existantFlight(flightNum)){
+                cout<<"Please specify your seat number";
+                cin>>flightSeat;
+            }
         }
         ofstream file;
         try{
@@ -63,7 +83,6 @@ Passenger::Passenger(Airport airport,string passport, bool existantPerson)
         }
         string str="passenger,"+passport+","+name+","+to_string(age)+","+nationality+","+flightNum+","+flightSeat+"\n";
         file<<str;
-            cout<<str<<endl;
 
         file.close();
     }
