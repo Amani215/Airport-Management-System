@@ -24,13 +24,8 @@ Airport::Airport(){
     
     fileName=airportName+"-"+location+".txt";
 
-    ofstream file;
-    try{
-        file.open(fileName,ios::app);
-    }catch(...){
-        cout<<"Could not create/open file!"<<endl;
-    }
-    if(!fileExists()) file<<"password,"<<password<<endl;
+    FileManagement fileManager(fileName);
+    if(!fileManager.fileExists()) fileManager.write("password,"+password);
 }
 
 
@@ -40,83 +35,43 @@ Airport::Airport(){
 
 //Shows all the General Data of the Airport (name, location, passengersNum, employeesNum and flightsData)
 void Airport::showAirportData() const{
+    FileManagement fileManager(fileName);
     cout<<"--"<<airportName<<" Airport General Data--"<<endl;
     cout<<"Location: "<<location<<endl;
-    cout<<"Number of passengers now: "<< passengersNum()<<endl;
-    cout<<"Number of employees now: "<<employeesNum()<<endl;
+    cout<<"Number of passengers now: "<< fileManager.numberOf("passenger")<<endl;
+    cout<<"Number of employees now: "<<fileManager.numberOf("employee")<<endl;
     cout<<"Flights:"<<endl;
     flightsData();
 }
 //Shows all the General Data of the Airport and the password
 void Airport::showAirportDataPersonnel() const{
+    FileManagement fileManager(fileName);
     cout<<"--"<<airportName<<" Airport General Data--"<<endl;
     cout<<"Location: "<<location<<endl;
-    cout<<"Number of passengers now: "<< passengersNum()<<endl;
-    cout<<"Number of employees now: "<<employeesNum()<<endl;
+    cout<<"Number of passengers now: "<< fileManager.numberOf("passenger")<<endl;
+    cout<<"Number of employees now: "<<fileManager.numberOf("employee")<<endl;
     showPassword();
     cout<<"Flights:"<<endl;
     flightsData();
 }
 //Shows the password
 void Airport::showPassword()const{ cout<<"Password: "<<password<<endl; }
-//returns the number of registered passengers in the airport
-int Airport::passengersNum() const{
-    string str;
-    int counter=0;
-    //open file for reading
-    ifstream file;
-    try{
-        file.open(fileName);
-    }
-    catch(...){
-        cout<<"There was an error.";
-    }
-    //count lines of passengers
-    while (getline(file,str)){
-        if(typeOfObjectInLine(str)=="passenger"){
-            counter++;
-        }
-    }
-    //return the number
-    return counter;
-}
-//returns the number of registered employees in the airport
-int Airport::employeesNum() const{
-    string str;
-    int counter=0;
-    //open file for reading
-    ifstream file;
-    try{
-        file.open(fileName);
-    }
-    catch(...){
-        cout<<"There was an error.";
-    }
-    //count lines of employees
-    while (getline(file,str)){
-        if(typeOfObjectInLine(str)=="employee"){
-            counter++;
-        }
-    }
-    //return the number
-    return counter;
-}
 //Shows a flight according to the given flight number
 void Airport::showFlightData(string flightNum) const{
+    FileManagement fileManager(fileName);
     bool found=false;
 
     string str;
     //open file and search for id
     ifstream file;
-    try{
-        file.open(fileName);
-    }
+    try{file.open(fileName);}
     catch(...){
-        cout<<"There was an error"<<endl;
+        cout<<"Could not open file!"<<endl;
+        throw exception();
     }
 
     while(getline(file,str)){
-        if((typeOfObjectInLine(str)=="flight")&&(getAttributeFromLine(str,1)==flightNum)){
+        if((fileManager.typeOfObjectInLine(str)=="flight")&&(fileManager.getAttributeFromLine(str,1)==flightNum)){
             Flight flight(*this,flightNum);
             flight.showFlightData(*this);
             found=true;
@@ -126,18 +81,18 @@ void Airport::showFlightData(string flightNum) const{
 }
 //prints the data of each flight registered in the airport
 void Airport::flightsData() const{
+    FileManagement fileManager(fileName);
     string str;
     //open file for reading
     ifstream file;
-    try{
-        file.open(fileName);
-    }
+    try{ file.open(fileName);}
     catch(...){
-        cout<<"There was an error.";
+        cout<<"Could not open file!";
+        throw exception();
     }
     while (getline(file,str)){
-        if(typeOfObjectInLine(str)=="flight"){
-            showFlightData(getAttributeFromLine(str,1));
+        if(fileManager.typeOfObjectInLine(str)=="flight"){
+            showFlightData(fileManager.getAttributeFromLine(str,1));
         }
     }
 }
@@ -152,8 +107,8 @@ void Airport::setPassword(){
     cout<<"New password: ";
     cin>>password;
     //Change it in the file
-    FileManagement newFile(fileName);
-    newFile.modify("password,"+password,0);
+    FileManagement file(fileName);
+    file.modify("password,"+password,0);
 
 }
 //Change the name of the airport
@@ -165,12 +120,15 @@ void Airport::setAirportName(){
 }
 //Change a flight data according to the given id
 void Airport::changeFlightData(){
+    FileManagement file(fileName);
+
     string input;
     cout<<"Please give the id of the flight: ";
     cin>>input;
+
     Flight flight(*this,input);
     //change the flight with that id in the file
-    if(existantFlight(input)){ 
+    if(file.existant("flight",input)){ 
         flight.changeFlightData(*this,input);
     }
 }
@@ -180,109 +138,7 @@ void Airport::changeFlightData(){
 //OTHER FUNCTIONS
 //*********************************************
 
-//file exists if there is a line where the password is written
-bool Airport::fileExists()const{
-    ifstream file;
-    try{
-        file.open(fileName);
-    }catch(...){
-        cout<<"Could not open file!"<<endl;
-    }
-    string str;
-    while(getline(file,str)){
-        if(typeOfObjectInLine(str)=="password") return true;
-    }
-    return false;
-}
 //returns true if the input is equal to the password
 bool Airport::checkPassword(string input)const{
     return (input.compare(password)==0);
-}
-//returns true if the employee with the given passport exists in the database
-bool Airport::existantEmployee(string passport)const{
-    ifstream file;
-    try{
-        file.open(fileName);
-    }
-    catch(...){
-        cout<<"Could not open file"<<endl;
-    }
-
-    string str;
-    while (getline(file, str)){
-        if((typeOfObjectInLine(str)=="employee")&&(passport==getAttributeFromLine(str,1))){
-            file.close();
-            return true;
-        }
-    }
-    return false;
-}
-//returns true if the passenger with the given passport exists in the database
-bool Airport::existantPassenger(string passport)const{
-    ifstream file;
-    try{
-        file.open(fileName);
-    }
-    catch(...){
-        cout<<"Could not open file"<<endl;
-    }
-
-    string str;
-    while (getline(file, str)){
-        if((typeOfObjectInLine(str)=="passenger")&&(passport==getAttributeFromLine(str,1))){
-            file.close();
-            return true;
-        }
-    }
-    return false;
-}
-//returns true if the flight with the given number exists in the database
-bool Airport::existantFlight(string flightNum)const{
-    ifstream file;
-    try{
-        file.open(fileName);
-    }
-    catch(...){
-        cout<<"Could not open file"<<endl;
-    }
-
-    string str;
-    while (getline(file, str)){
-        if((typeOfObjectInLine(str)=="flight")&&(flightNum==getAttributeFromLine(str,1))){
-            file.close();
-            return true;
-        }
-    }
-    return false;
-}
-//returns the type of the object in the line
-string Airport::typeOfObjectInLine(string str)const{
-    char temp[10]="";
-    int i=0;
-    while (str[i]!=','){
-        temp[i]=str[i];
-        i++;
-    }
-    temp[i]='\0';
-    return temp;
-}
-//returns the value of the attribute according to the given position
-string Airport::getAttributeFromLine(string str,int orderOfTheAttribute)const{
-    char attribute[50]="";
-    int j=0, i=0;
-    do{
-        while (str[i]!=','){
-            i++;
-        }
-        j++;
-        i++;
-    }while (j<orderOfTheAttribute);
-    j=0;
-    while ((str[i]!=',')){
-        attribute[j]=str[i];
-        j++;
-        i++;
-    }
-    attribute[j]='\0';
-    return attribute;
 }
