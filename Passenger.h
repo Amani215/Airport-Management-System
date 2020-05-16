@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include"Person.h"
-#include"Airport.h"
+#include "Person.h"
+#include "Airport.h"
 #include "Flight.h" 
  
 class Passenger:public Person{
@@ -24,6 +24,6 @@ class Passenger:public Person{
     //prints the data of the Passenger
     virtual void printData()const override;
     //Change the flight data of the passenger (does not change the actual flight data)
-    void setMyFlightData();
+    void setMyFlightData(Airport airport);
 };
 

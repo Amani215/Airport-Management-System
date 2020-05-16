@@ -60,7 +60,7 @@ Employee::Employee(Airport airport,string passport, bool existantPerson)
 //MENU AND FUNCTIONS RELATED TO THE MENU
 //**********************************************
 
-//the employees have more options in their menu
+//the employees have more options in their menu than the passengers
 void Employee::menu(Airport airport)const{
     Employee employee(airport,passport,true);
     if(employee.passport!=passport) return;//if an error happens
@@ -126,7 +126,7 @@ void Employee::menu(Airport airport)const{
     }
     
     return;
-}
+} 
 
 //OPTION 1
 //prints the data of the employee

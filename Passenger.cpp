@@ -87,7 +87,7 @@ Passenger::Passenger(Airport airport,string passport, bool existantPerson)
         file.close();
     }
 }
-
+ 
 //Destructor
 Passenger::~Passenger(){}
 
@@ -132,7 +132,7 @@ void Passenger::menu(Airport airport)const{
                 passenger.changeData();
                 break;
            case 5://Done (file handling)
-                passenger.setMyFlightData();
+                passenger.setMyFlightData(airport);
                 break;
            case 6:
                 airport.flightsData();
@@ -154,7 +154,7 @@ void Passenger::menu(Airport airport)const{
 void Passenger::printData()const{
     cout<<" Passport number: "<<passport<<endl;
     cout<<" Name: "<<name<<endl;
-    cout<<" Age "<<age<<endl;
+    cout<<" Age: "<<age<<endl;
     cout<<" Nationality: "<<nationality<<endl;
     cout<<" Flight info:"<<endl;
     cout<<"     Flight number: "<<flightNum<<endl;
@@ -162,12 +162,32 @@ void Passenger::printData()const{
 }
 
 //Option 5: Change Flight Data
-void Passenger::setMyFlightData(){
-    cout<<"Current flight ID: "<<flightNum<<endl;
+void Passenger::setMyFlightData(Airport airport){
+    cout<<"Current flight number: "<<flightNum<<endl;
     cout<<"New Flight ID (if you don't want to change it please write it again): ";
     cin>>flightNum;
-
-    cout<<"Current seat: "<<flightSeat<<endl;
-    cout<<"New seat (if you don't want to change it please write it again): ";
-    cin>>flightSeat;
+    if(!airport.existantFlight(flightNum)){
+        do{
+            cout<<"Sorry there's no such flight in our database. Do you want to:"<<endl
+                <<" 1. Set the Flight to 0 and proceed"<<endl
+                <<" 2. Register in another flight"<<endl;
+            int input;
+            cin>>input;
+            if(input==1){
+                flightNum="0";
+                flightSeat="0";
+                break;
+            }
+            if(input==2){
+                cout<<"New Flight: ";
+                cin>>flightNum;
+            }
+        }while(!airport.existantFlight(flightNum));
+    }
+    
+    if(flightNum!="0"){
+        cout<<"Current seat: "<<flightSeat<<endl;
+        cout<<"New seat (if you don't want to change it please write it again): ";
+        cin>>flightSeat;
+    }
 }

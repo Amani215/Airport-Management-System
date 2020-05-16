@@ -22,6 +22,14 @@ Airport::Airport(){
     password="admin";
     
     fileName=airportName+"-"+location+".txt";
+
+    ofstream file;
+    try{
+        file.open(fileName,ios::app);
+    }catch(...){
+        cout<<"Could not create/open file!"<<endl;
+    }
+    if(!fileExists()) file<<"password,"<<password<<endl;
 }
 
 
@@ -83,7 +91,7 @@ int Airport::employeesNum() const{
     catch(...){
         cout<<"There was an error.";
     }
-    //count lines of passengers
+    //count lines of employees
     while (getline(file,str)){
         if(typeOfObjectInLine(str)=="employee"){
             counter++;
@@ -92,7 +100,7 @@ int Airport::employeesNum() const{
     //return the number
     return counter;
 }
-//Shows a flight according to the given id
+//Shows a flight according to the given flight number
 void Airport::showFlightData(string flightNum) const{
     bool found=false;
 
@@ -139,7 +147,7 @@ void Airport::flightsData() const{
 //*********************************************
 
 //Change the password
-void Airport::setPassword(){
+void Airport::setPassword(){//************************************
     cout<<"New password: ";
     cin>>password;
     //Change it in the file
@@ -151,7 +159,7 @@ void Airport::setAirportName(){
     //change the filename and copy the old file in the new one
 }
 //Change a flight data according to the given id
-void Airport::changeFlightData(){
+void Airport::changeFlightData(){//************************************************
     string input;
     cout<<"Please give the id of the flight: ";
     cin>>input;
@@ -167,11 +175,25 @@ void Airport::changeFlightData(){
 //OTHER FUNCTIONS
 //*********************************************
 
+//file exists if there is a line where the password is written
+bool Airport::fileExists()const{
+    ifstream file;
+    try{
+        file.open(fileName);
+    }catch(...){
+        cout<<"Could not open file!"<<endl;
+    }
+    string str;
+    while(getline(file,str)){
+        if(typeOfObjectInLine(str)=="password") return true;
+    }
+    return false;
+}
 //returns true if the input is equal to the password
 bool Airport::checkPassword(string input)const{
     return (input.compare(password)==0);
 }
-
+//returns true if the employee with the given passport exists in the database
 bool Airport::existantEmployee(string passport)const{
     ifstream file;
     try{
@@ -190,7 +212,7 @@ bool Airport::existantEmployee(string passport)const{
     }
     return false;
 }
-
+//returns true if the passenger with the given passport exists in the database
 bool Airport::existantPassenger(string passport)const{
     ifstream file;
     try{
@@ -209,7 +231,7 @@ bool Airport::existantPassenger(string passport)const{
     }
     return false;
 }
-
+//returns true if the flight with the given number exists in the database
 bool Airport::existantFlight(string flightNum)const{
     ifstream file;
     try{
@@ -239,19 +261,7 @@ string Airport::typeOfObjectInLine(string str)const{
     temp[i]='\0';
     return temp;
 }
-
-int Airport::numberOfAttributesInLine(string str)const{//******************************************
-    int i=0,counter=0;
-    while(str[i]!='\n'){
-        while((str[i]!=',')&&(str[i]!='\n')){
-            i++;
-        }
-        counter++;
-        if (str[i]!='\n') i++;
-    }
-    return counter;
-}
-
+//returns the value of the attribute according to the given position
 string Airport::getAttributeFromLine(string str,int orderOfTheAttribute)const{
     char attribute[50]="";
     int j=0, i=0;

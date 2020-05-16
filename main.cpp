@@ -13,21 +13,29 @@ int main()
     
     int nature;
     do{
-        cout<<"If you're a passenger please press 1, if you're an employee please press 0"<<endl;
+        cout<<"Signing in/Signing up as a:"<<endl
+            <<" 1. Passenger"<<endl
+            <<" 2. Employee"<<endl;
         cin>>nature;
     }while ((nature!=0)&&(nature!=1));
     
     cout<<"Please enter your passport number"<<endl;
     cin>>passport;
 
-    if(nature==0){
-        Employee user(airport,passport,airport.existantEmployee(passport));
-        user.menu(airport);
-    }
-    else{ 
+    if(nature==1){
         Passenger user(airport,passport,airport.existantPassenger(passport));
         user.menu(airport);
     }
-
+    else if(nature==2){ 
+        Employee user(airport,passport,airport.existantEmployee(passport));
+        user.menu(airport);
+    }
+    else
+    {
+        cout<<"Sorry there was no such option..."<<endl;
+    }
+    
     return 0;
 }
+
+//Maybe add the dynamic memory handling here

@@ -1,7 +1,7 @@
 #pragma once
 
-#include<iostream>
-#include<string>
+#include <iostream>
+#include <string>
 #include <time.h>
 #include "Airport.h"
 #include "Employee.h"
@@ -26,8 +26,9 @@ class Flight{
     
     //FUNCTIONS FOR CHANGING THE DATA
 
-    //this change the attributes aprt from the flightNum and the destination which will always be constant
+    //this changes the attributes apart from the flightNum and the destination which will always be constant
     void changeFlightData(Airport airport, string flightNum);
+    //set the time of taking off
     void setTime();
     //set the price of the flight
     void setPrice(string flightNum);
@@ -35,7 +36,7 @@ class Flight{
     void setAirlineCompany(string flightNum);
     //set the number of seats in the plane
     void setNumberOfSeats(string flightNum);
-
+    //set the pilot passport number
     void setPilot(Airport airport);
     
     //FUNCTIONS FOR SHOWING THE DATA

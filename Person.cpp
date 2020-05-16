@@ -44,10 +44,10 @@ Person::Person(Airport airport,string passport, bool existantPerson){
 Person::~Person(){}
 
 //*****************************************
-//FUNCTIONS FOR SHOWING DATA
+//FUNCTIONS FOR CHANGING DATA
 //*****************************************
 
-//change the data
+//change the data of the person
 void Person::changeData(){
     string input;
     cout<<"--Changing the data--"<<endl;
@@ -70,6 +70,9 @@ void Person::changeData(){
     if(input!="0") passport=input;
 }
 
-string Person::getName()const{ return name;}
+//*****************************************
+//OTHER FUNCTIONS
+//*****************************************
 
+string Person::getName()const{ return name;}
 string Person::getPassport()const{return passport;}

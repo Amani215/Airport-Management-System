@@ -61,7 +61,7 @@ using namespace std;
             //adding the object to the file
             ofstream file;
             try{ file.open(airport.getfileName(),ios::app);}
-            catch(...){ cout<<"There was an error.";}
+            catch(...){ cout<<"Could not open file!"<<endl;}
 
             //put the data in the file
             string str="flight,"+flightNum+","+destination+","+timeOfTakingOff+","+to_string(price)+","+airlineCompany+","+to_string(numberOfSeats)+","+pilot;
@@ -69,13 +69,14 @@ using namespace std;
             cout<<"here"<<endl;
             file<<str<<endl; 
             file.close();
-        }
+        } 
     }
 
     //*************************************
     //FUNCTIONS FOR CHANGING DATA
     //*************************************
 
+    //this changes the attributes apart from the flightNum and the destination which will always be constant
     void Flight::changeFlightData(Airport airport, string flightNum){
         cout<<"If you don't want to change an attribute please type it again"<<endl;
         setTime();
@@ -89,43 +90,7 @@ using namespace std;
 
         cout<<endl<<"Changes are done!"<<endl;
     }
-
-    //set the price of the flight
-    void Flight::setPrice(string flightNum){
-        cout<<"Current price: "<<price<<" change it to:";
-        cin>>price;
-    }
-    //set the airline Company
-    void Flight::setAirlineCompany(string flightNum){
-        cout<<"Current airline company: "<<airlineCompany<<" change it to:";
-        cin>>airlineCompany;
-    }
-    //set the number of seats in the plane
-    void Flight::setNumberOfSeats(string flightNum){
-        cout<<"Current number of seats: "<<numberOfSeats<<" change it to:";
-        cin>>numberOfSeats;
-    }
-
-    void Flight::setPilot(Airport airport){
-        string pilot;
-        cin>>pilot;
-        if(!airport.existantEmployee(pilot)) {
-            int input;
-            do{
-                cout<<"This passport number doesn't exist in the employees database. Do you want to add it?"<<endl;
-                cout<<" 0.No"<<endl<<" 1.Yes"<<endl;
-                cin>>input;
-                if(input==1) Employee newEmployee(airport,pilot,false);
-                else
-                {
-                    cout<<"Please give a new passport number"<<endl;
-                    cin>>pilot;
-                } 
-            }while(!airport.existantEmployee(pilot)); 
-        }
-        pilotPassport=pilot;
-    }
-
+    //set the time of taking off
     void Flight::setTime(){
         int input;
         string str;
@@ -161,6 +126,42 @@ using namespace std;
 
         timeOfTakingOff=str;
     }
+    //set the price of the flight
+    void Flight::setPrice(string flightNum){
+        cout<<"Current price: "<<price<<" change it to:";
+        cin>>price;
+    }
+    //set the airline Company
+    void Flight::setAirlineCompany(string flightNum){
+        cout<<"Current airline company: "<<airlineCompany<<" change it to:";
+        cin>>airlineCompany;
+    }
+    //set the number of seats in the plane
+    void Flight::setNumberOfSeats(string flightNum){
+        cout<<"Current number of seats: "<<numberOfSeats<<" change it to:";
+        cin>>numberOfSeats;
+    }
+    //set the pilot passport number
+    void Flight::setPilot(Airport airport){
+        string pilot;
+        cin>>pilot;
+        if(!airport.existantEmployee(pilot)) {
+            int input;
+            do{
+                cout<<"This passport number doesn't exist in the employees database. Do you want to add it?"<<endl;
+                cout<<" 0.No"<<endl<<" 1.Yes"<<endl;
+                cin>>input;
+                if(input==1) Employee newEmployee(airport,pilot,false);
+                else
+                {
+                    cout<<"Please give a new passport number"<<endl;
+                    cin>>pilot;
+                } 
+            }while(!airport.existantEmployee(pilot)); 
+        }
+        pilotPassport=pilot;
+    }
+
     //*************************************
     //FUNCTIONS FOR SHOWING DATA
     //*************************************

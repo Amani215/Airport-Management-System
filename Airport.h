@@ -31,8 +31,8 @@ class Airport{
         int passengersNum() const;       
         //returns the number of registered employees in the airport
         int employeesNum() const;
-        //prints the data of a flight according to a given id
-        void showFlightData(string flightId)const;
+        //prints the data of a flight according to a given flight number
+        void showFlightData(string flightNum)const;
         //prints the data of each flight registered in the airport
         void flightsData() const;
         
@@ -42,35 +42,28 @@ class Airport{
         void setAirportName();
         //change the password
         void setPassword();
-        //Changes the data of a flight according to an id
+        //Changes the data of a flight according to a flight number (asked for inside the function)
         void changeFlightData();
 
         //OTHER FUNCTIONS
 
-        //returns true if the input is equal to the password
-        bool checkPassword(string input)const;
-
-        bool existantEmployee(string passport)const;
-
-        bool existantPassenger(string passport)const;
-
-        bool existantFlight(string flightNum)const;
         //returns the name of the file
         string getfileName() const{return fileName;}
-        //returns the type of the object in a line
+        //file exists if there is a line where the password is written
+        bool fileExists()const;
+        //returns true if the input is equal to the password
+        bool checkPassword(string input)const;
+        //returns true if the employee with the given passport exists in the database
+        bool existantEmployee(string passport)const;
+        //returns true if the passenger with the given passport exists in the database
+        bool existantPassenger(string passport)const;
+        //returns true if the flight with the given number exists in the database
+        bool existantFlight(string flightNum)const;
+        //returns the type of the object in a line (examples: "passenger","employee","flight","password")
         string typeOfObjectInLine(string str)const;
-
-        int numberOfAttributesInLine(string str)const;
-        
+        //returns the value of the attribute according to the given position
         string getAttributeFromLine(string str,int orderOfTheAttribute)const;
 };
-
-//*********************************************************************************************
-//                                          ISSUES
-//*********************************************************************************************
-//*Missing file handling
-//*Missing error handling
-//*can we put objects inside a file? (asking for flightsData)
 
 
 

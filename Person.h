@@ -3,7 +3,7 @@
 #include <string>
 #include "Airport.h"
 
-class Person{
+class Person{ 
   protected:
     string name;        //name of the person
     int age;            //age of the person
@@ -27,13 +27,10 @@ class Person{
     //change the data 
     void changeData();
 
+    //OTHER FUNCTIONS
+    
+    //returns the name of the person
     string getName()const;
-
+    //returns the passport of the person
     string getPassport()const;
 };
-
-//************************************************************************************
-//                                      ISSUES
-//************************************************************************************
-//*cannot read strings with spaces
-

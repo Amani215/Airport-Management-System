@@ -4,3 +4,4 @@ employee,dd,dd,7,dd,300000.000000
 flight,ee,ee,,55.000000,ee,55,
 passenger,zzzz,zzz,8,zz,zzz,0
 passenger,aaa,aaa,77,aaa,0,0
+password,admin
