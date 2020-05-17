@@ -13,26 +13,30 @@ using namespace std;
 
 //Default constructor
 Flight::Flight(Airport airport,string flightNum){
-    if(airport.existantFlight(flightNum)){
+    FileManagement fileManager(airport.getfileName());
+    if(fileManager.existant("flight",flightNum)){
         this->flightNum="-1";
         string str;
 
         //open file
         ifstream file;
         try{file.open(airport.getfileName());}
-        catch(...){cout<<"there was an error";}
+        catch(...){
+            cout<<"Could not open file!"<<endl;
+            throw exception();
+        }
 
         //search for id and assign the attributes
         while (getline(file,str))
         {
-            if((airport.typeOfObjectInLine(str)=="flight")&&(airport.getAttributeFromLine(str,1)==flightNum)){
+            if((fileManager.typeOfObjectInLine(str)=="flight")&&(fileManager.getAttributeFromLine(str,1)==flightNum)){
                 this->flightNum=flightNum;
-                destination=airport.getAttributeFromLine(str,2);
-                timeOfTakingOff=airport.getAttributeFromLine(str,3);
-                price=stod(airport.getAttributeFromLine(str,5));      
-                airlineCompany=airport.getAttributeFromLine(str,6); 
-                numberOfSeats=stoi(airport.getAttributeFromLine(str,7));   
-                pilotPassport=airport.getAttributeFromLine(str,8);
+                destination=fileManager.getAttributeFromLine(str,2);
+                timeOfTakingOff=fileManager.getAttributeFromLine(str,3);
+                price=stod(fileManager.getAttributeFromLine(str,5));      
+                airlineCompany=fileManager.getAttributeFromLine(str,6); 
+                numberOfSeats=stoi(fileManager.getAttributeFromLine(str,7));   
+                pilotPassport=fileManager.getAttributeFromLine(str,8);
             }   
         }
 
@@ -61,9 +65,8 @@ Flight::Flight(Airport airport,string flightNum){
         setPilot(airport);
 
         //adding the object to the file
-        FileManagement file(airport.getfileName());
         string str="flight,"+flightNum+","+destination+","+timeOfTakingOff+","+to_string(price)+","+airlineCompany+","+to_string(numberOfSeats)+","+pilot;
-        file.write(str);
+        fileManager.write(str);
     } 
 }
 
@@ -84,23 +87,9 @@ void Flight::changeFlightData(Airport airport, string flightNum){
     setPilot(airport);
 
     string attributes="flight,"+flightNum+","+timeOfTakingOff+","+to_string(price)+","+airlineCompany+","+to_string(numberOfSeats)+","+pilotPassport;
-    ifstream file;
-    string str;
-    try{file.open(airport.getfileName());}
-    catch(...){
-        cout<<"Could not open file!"<<endl;
-        throw exception();
-    }
-    int line=-1;
-    while(getline(file,str)){
-        line++;
-        if((airport.typeOfObjectInLine(str)=="flight")&&(airport.getAttributeFromLine(str,1)==flightNum)){
-            break;
-        }
-    }
-    file.close();
-    FileManagement newFile(airport.getfileName());
-    newFile.modify(attributes,line);
+    FileManagement fileManager(airport.getfileName());
+    fileManager.modify(attributes,fileManager.lineOfObject(airport,"flight",flightNum));
+
     cout<<endl<<"Changes are done!"<<endl;
 }
 //set the time of taking off
@@ -156,9 +145,10 @@ void Flight::setNumberOfSeats(string flightNum){
 }
 //set the pilot passport number
 void Flight::setPilot(Airport airport){
+    FileManagement fileManager(airport.getfileName());
     string pilot;
     cin>>pilot;
-    if(!airport.existantEmployee(pilot)) {
+    if(!fileManager.existant("employee",pilot)) {
         int input;
         do{
             cout<<"This passport number doesn't exist in the employees database. Do you want to add it?"<<endl;
@@ -170,7 +160,7 @@ void Flight::setPilot(Airport airport){
                 cout<<"Please give a new passport number"<<endl;
                 cin>>pilot;
             } 
-        }while(!airport.existantEmployee(pilot)); 
+        }while(!fileManager.existant("employee",pilot)); 
     }
     pilotPassport=pilot;
 }
