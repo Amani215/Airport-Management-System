@@ -16,26 +16,26 @@ Employee::Employee(Airport airport,string passport, bool existantPerson)
      :Person(airport,passport, existantPerson)
 {
      if(existantPerson){
+          FileManagement fileManager(airport.getfileName());
           string str;
 
           //open file
           ifstream file;
-          try{
-               file.open(airport.getfileName());
-          }
+          try{file.open(airport.getfileName());}
           catch(...){
-               cout<<"there was an error";
+               cout<<"Could not open file!"<<endl;
+               throw exception();
           }
 
           //search for id and assign the attributes
           while (getline(file,str))
           {
-               if((airport.typeOfObjectInLine(str)=="employee")&&(airport.getAttributeFromLine(str,1)==passport)){
-                    passport=airport.getAttributeFromLine(str,1);
-                    name=airport.getAttributeFromLine(str,2);
-                    age=stoi(airport.getAttributeFromLine(str,3));
-                    nationality=airport.getAttributeFromLine(str,4);
-                    salary=stod(airport.getAttributeFromLine(str,5));
+               if((fileManager.typeOfObjectInLine(str)=="employee")&&(fileManager.getAttributeFromLine(str,1)==passport)){
+                    passport=fileManager.getAttributeFromLine(str,1);
+                    name=fileManager.getAttributeFromLine(str,2);
+                    age=stoi(fileManager.getAttributeFromLine(str,3));
+                    nationality=fileManager.getAttributeFromLine(str,4);
+                    salary=stod(fileManager.getAttributeFromLine(str,5));
                }   
           }
 
@@ -44,7 +44,7 @@ Employee::Employee(Airport airport,string passport, bool existantPerson)
      else{
           salary=300000;
           FileManagement file(airport.getfileName());
-          string str="employee,"+passport+","+name+","+to_string(age)+","+nationality+","+to_string(salary)+"\n";
+          string str="employee,"+passport+","+name+","+to_string(age)+","+nationality+","+to_string(salary);
           file.write(str);
      }
 }
@@ -93,7 +93,7 @@ void Employee::menu(Airport airport)const{
                     airport.flightsData();
                     break;
                case 4://Done
-                    employee.changeData();
+                    employee.changeData(airport);
                     break;
                case 5://Done (file handling)
                     airport.setAirportName();
@@ -132,9 +132,12 @@ void Employee::printData()const{
 
 //OPTION 4: 
 //change the data
-void Employee::changeData(){ //***************************
+void Employee::changeData(Airport airport){ 
+     FileManagement fileManager(airport.getfileName());
      Person::changeData(); 
      setSalary();
+     string attributes="employee,"+passport+","+name+","+to_string(age)+","+nationality+","+to_string(salary);
+     fileManager.modify(attributes,fileManager.lineOfObject(airport,"employee",passport));
 }
 //change the salary
 void Employee::setSalary(){

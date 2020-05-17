@@ -20,7 +20,7 @@ class Employee:public Person{
         //Prints the data of the employee
         virtual void printData()const override;
         //change the data of the employee
-        void changeData();
+        void changeData(Airport airport);
         //change the salary of the employee
         void setSalary();
 };
