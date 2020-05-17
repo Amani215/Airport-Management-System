@@ -23,8 +23,6 @@ class Airport{
 
         //Shows all the Data of the Airport (name, location, passengersNum, employeesNum and flightsData)
         void showAirportData() const;
-        //Shows all the General Data of the Airport and the password
-        void showAirportDataPersonnel() const;
         //Shows the password
         void showPassword()const;
         //prints the data of a flight according to a given flight number

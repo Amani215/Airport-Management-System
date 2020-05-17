@@ -1,3 +1,0 @@
-- finish the functions related to changing data
-- add at least one dynamic memory management
-- exception handling

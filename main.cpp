@@ -25,18 +25,20 @@ int main()
     cin>>passport;
 
     if(nature==1){
-        Passenger user(airport,passport,fileManager.existant("passenger",passport));
-        user.menu(airport);
+        Passenger *user= new Passenger(airport,passport,fileManager.existant("passenger",passport));
+        user->menu(airport);
+        delete user;
     }
     else if(nature==2){ 
-        Employee user(airport,passport,fileManager.existant("employee",passport));
-        user.menu(airport);
+        Employee *user= new Employee(airport,passport,fileManager.existant("employee",passport));
+        user->menu(airport);
+        delete user;
     }
     else
     {
         cout<<"Sorry there was no such option..."<<endl;
     }
-    
+
     return 0;
 }
 

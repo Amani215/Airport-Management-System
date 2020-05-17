@@ -87,7 +87,8 @@ void Employee::menu(Airport airport)const{
                     employee.printData();
                     break;
                case 2://Done
-                    airport.showAirportDataPersonnel();
+                    airport.showAirportData();
+                    airport.showPassword();
                     break;
                case 3:
                     airport.flightsData();

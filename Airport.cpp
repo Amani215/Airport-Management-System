@@ -55,20 +55,8 @@ void Airport::showAirportData() const{
     cout<<"Location: "<<location<<endl;
     cout<<"Number of passengers now: "<< fileManager.numberOf("passenger")<<endl;
     cout<<"Number of employees now: "<<fileManager.numberOf("employee")<<endl;
-    cout<<"Flights:"<<endl;
-    flightsData();
 }
-//Shows all the General Data of the Airport and the password
-void Airport::showAirportDataPersonnel() const{
-    FileManagement fileManager(fileName);
-    cout<<"--"<<airportName<<" Airport General Data--"<<endl;
-    cout<<"Location: "<<location<<endl;
-    cout<<"Number of passengers now: "<< fileManager.numberOf("passenger")<<endl;
-    cout<<"Number of employees now: "<<fileManager.numberOf("employee")<<endl;
-    showPassword();
-    cout<<"Flights:"<<endl;
-    flightsData();
-}
+
 //Shows the password
 void Airport::showPassword()const{ cout<<"Password: "<<password<<endl; }
 
@@ -93,7 +81,6 @@ void Airport::showFlightData(string flightNum) const{
         while(getline(file,str)){
             if((fileManager.typeOfObjectInLine(str)=="flight")&&(fileManager.getAttributeFromLine(str,1)==flightNum)){
                 Flight flight(*this,flightNum);
-                cout<<"here"<<endl;
                 flight.showFlightData(*this);
                 found=true;
             }

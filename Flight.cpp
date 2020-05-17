@@ -180,4 +180,5 @@ void Flight::showFlightData(Airport airport) const{
         cout<<" Pilot: "<<endl;
         Employee pilot(airport, pilotPassport,true);
         pilot.printData();
+        cout<<endl;
     }
