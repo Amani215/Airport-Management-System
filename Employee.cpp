@@ -73,7 +73,7 @@ void Employee::menu(Airport airport)const{
            cout<<"3. See flights data"<<endl;
            cout<<"4. Change my personal data"<<endl;
            cout<<"5. Change the airport name"<<endl;
-           cout<<"6. Change flight data"<<endl;
+           cout<<"6. Add/Change flight data"<<endl;
            cout<<"7. Change the password"<<endl;
            cout<<"0. Log out."<<endl<<endl;
            

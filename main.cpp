@@ -19,7 +19,7 @@ int main()
             <<" 1. Passenger"<<endl
             <<" 2. Employee"<<endl;
         cin>>nature;
-    }while ((nature!=0)&&(nature!=1));
+    }while ((nature!=1)&&(nature!=2));
     
     cout<<"Please enter your passport number"<<endl;
     cin>>passport;

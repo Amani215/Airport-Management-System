@@ -28,15 +28,16 @@ Flight::Flight(Airport airport,string flightNum){
 
         //search for id and assign the attributes
         while (getline(file,str))
-        {
+        {   
             if((fileManager.typeOfObjectInLine(str)=="flight")&&(fileManager.getAttributeFromLine(str,1)==flightNum)){
                 this->flightNum=flightNum;
                 destination=fileManager.getAttributeFromLine(str,2);
                 timeOfTakingOff=fileManager.getAttributeFromLine(str,3);
-                price=stod(fileManager.getAttributeFromLine(str,5));      
-                airlineCompany=fileManager.getAttributeFromLine(str,6); 
-                numberOfSeats=stoi(fileManager.getAttributeFromLine(str,7));   
-                pilotPassport=fileManager.getAttributeFromLine(str,8);
+                price=stod(fileManager.getAttributeFromLine(str,4));      
+                airlineCompany=fileManager.getAttributeFromLine(str,5); 
+                numberOfSeats=stoi(fileManager.getAttributeFromLine(str,6));   
+                pilotPassport=fileManager.getAttributeFromLine(str,7);
+                break;
             }   
         }
 
@@ -60,12 +61,11 @@ Flight::Flight(Airport airport,string flightNum){
         cout<<"Number of seats: ";
         cin>>numberOfSeats;
 
-        string pilot;
         cout<<"Pilot passport number: ";
         setPilot(airport);
 
         //adding the object to the file
-        string str="flight,"+flightNum+","+destination+","+timeOfTakingOff+","+to_string(price)+","+airlineCompany+","+to_string(numberOfSeats)+","+pilot;
+        string str="flight,"+flightNum+","+destination+","+timeOfTakingOff+","+to_string(price)+","+airlineCompany+","+to_string(numberOfSeats)+","+pilotPassport+",";
         fileManager.write(str);
     } 
 }
@@ -86,7 +86,7 @@ void Flight::changeFlightData(Airport airport, string flightNum){
     cout<<"Change it to: ";
     setPilot(airport);
 
-    string attributes="flight,"+flightNum+","+timeOfTakingOff+","+to_string(price)+","+airlineCompany+","+to_string(numberOfSeats)+","+pilotPassport;
+    string attributes="flight,"+flightNum+","+destination+","+timeOfTakingOff+","+to_string(price)+","+airlineCompany+","+to_string(numberOfSeats)+","+pilotPassport+",";
     FileManagement fileManager(airport.getfileName());
     fileManager.modify(attributes,fileManager.lineOfObject(airport,"flight",flightNum));
 
@@ -112,7 +112,7 @@ void Flight::setTime(){
         cout<<"Year of Taking off: ";
         cin>>input;
     }while(input<0);
-    str+=(to_string(input)+" ");
+    str+=(to_string(input)+"::");
 
     do{
         cout<<"Hour of Taking off: ";
