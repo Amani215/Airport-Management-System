@@ -14,12 +14,12 @@ using namespace std;
 //Constructor
 Employee::Employee(Airport airport,string passport, bool existantPerson)
      :Person(airport,passport, existantPerson)
-{
+{    
+     //if the given passport exists in the database the copy the attributes from the file
      if(existantPerson){
           FileManagement fileManager(airport.getfileName());
-          string str;
 
-          //open file
+          //open the airport file
           ifstream file;
           try{file.open(airport.getfileName());}
           catch(...){
@@ -27,9 +27,11 @@ Employee::Employee(Airport airport,string passport, bool existantPerson)
                throw exception();
           }
 
-          //search for id and assign the attributes
+          //search for employee with given passport and assign the attributes
+          string str;
           while (getline(file,str))
-          {
+          {    
+               //when the employee is found copy the attributes
                if((fileManager.typeOfObjectInLine(str)=="employee")&&(fileManager.getAttributeFromLine(str,1)==passport)){
                     passport=fileManager.getAttributeFromLine(str,1);
                     name=fileManager.getAttributeFromLine(str,2);
@@ -38,11 +40,13 @@ Employee::Employee(Airport airport,string passport, bool existantPerson)
                     salary=stod(fileManager.getAttributeFromLine(str,5));
                }   
           }
-
+          //close the airport file
           file.close();
      }
+     //if the given passport is new then create a new employee in the database
      else{
           salary=300000;
+          //add the attributes to the airport file
           FileManagement file(airport.getfileName());
           string str="employee,"+passport+","+name+","+to_string(age)+","+nationality+","+to_string(salary)+",";
           file.write(str);
@@ -55,13 +59,16 @@ Employee::Employee(Airport airport,string passport, bool existantPerson)
 
 //the employees have more options in their menu than the passengers
 void Employee::menu(Airport airport)const{
-    Employee employee(airport,passport,true);
-    if(employee.passport!=passport) return;//if an error happens
+    //allocate memory for a temporary employee
+    Employee* employee= new Employee(airport,passport,true);
+    if(employee->passport!=passport) return;//if an error happens
 
+    //ask for password
     string password;
     cout<<"Please write the airport password: ";
     cin>>password;
     
+    //if password is correct proceed
     if(airport.checkPassword(password)){
         int option;
         
@@ -84,7 +91,7 @@ void Employee::menu(Airport airport)const{
            switch(option){
                case 1://Done
                     cout<<"--My Personal Data--"<<endl;
-                    employee.printData();
+                    employee->printData();
                     break;
                case 2://Done
                     airport.showAirportData();
@@ -94,7 +101,7 @@ void Employee::menu(Airport airport)const{
                     airport.flightsData();
                     break;
                case 4://Done
-                    employee.changeData(airport);
+                    employee->changeData(airport);
                     break;
                case 5://Done (file handling)
                     airport.setAirportName();
@@ -118,6 +125,7 @@ void Employee::menu(Airport airport)const{
         cout<<"Wrong password!";
     }
     
+    delete employee;
     return;
 } 
 
@@ -135,20 +143,20 @@ void Employee::printData()const{
 //change the data
 void Employee::changeData(Airport airport){ 
      FileManagement fileManager(airport.getfileName());
+     //change attributes inherited from the base class Person
      Person::changeData(); 
+     //change the salary
      setSalary();
+     //set the changes in the airport file
      string attributes="employee,"+passport+","+name+","+to_string(age)+","+nationality+","+to_string(salary)+",";
      fileManager.modify(attributes,fileManager.lineOfObject(airport,"employee",passport));
 }
+
 //change the salary
 void Employee::setSalary(){
      double input;
      cout<<"Salary: ";
      cin>>input;
+     //if 0 is typed then the employee chose not to change it
      if (input!=0) salary= input;
 }
-
-//********************************************************************************************
-//                                      REMARKS
-//********************************************************************************************
-//option 3,6

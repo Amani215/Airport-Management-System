@@ -28,7 +28,7 @@ class Flight{
     //FUNCTIONS FOR CHANGING THE DATA
 
     //this changes the attributes apart from the flightNum and the destination which will always be constant
-    void changeFlightData(Airport airport, string flightNum);
+    void changeFlightData(Airport airport);
     //set the time of taking off
     void setTime();
     //set the price of the flight

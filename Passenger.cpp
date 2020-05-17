@@ -14,11 +14,11 @@ using namespace std;
 //Constructor
 Passenger::Passenger(Airport airport,string passport, bool existantPerson)
     :Person(airport,passport, existantPerson)
-{
+{   
+    //if the given passport exists in the file
     if(existantPerson){
         FileManagement fileManager(airport.getfileName());
-        this->passport="";
-        //open file
+        //open the airport file for reading
         ifstream file;
         try{ file.open(airport.getfileName());}
         catch(...){
@@ -28,7 +28,8 @@ Passenger::Passenger(Airport airport,string passport, bool existantPerson)
         //search for id and assign the attributes
         string str;
         while (getline(file,str))
-        {
+        {   
+            //when the passenger is found
             if((fileManager.typeOfObjectInLine(str)=="passenger")&&(fileManager.getAttributeFromLine(str,1)==passport)){
                 this->passport=fileManager.getAttributeFromLine(str,1);
                 name=fileManager.getAttributeFromLine(str,2);
@@ -39,19 +40,22 @@ Passenger::Passenger(Airport airport,string passport, bool existantPerson)
                 break;
             }   
         }
-
-        if(this->passport=="") cout<<"There was an error"<<endl;
-
+        //close the file
         file.close();
     }
+    //if the given passport doesn't exist in the file
     else{
         FileManagement fileManager(airport.getfileName());
+        //read the flight data
         cout<<"If you have a flight please enter the flight number (if not please press 0)"<<endl;
         cin>>flightNum;
+        //if flightNum is 0 then set flightSeat to 0
         if(flightNum=="0"){
             flightSeat="0";
         }
+        //flightNum is different from 0
         else{
+            //if the given flight number doesn't exist in the database
             if(!fileManager.existant("flight",flightNum)){
                 int input;
                 do{
@@ -69,11 +73,13 @@ Passenger::Passenger(Airport airport,string passport, bool existantPerson)
                     }
                 }while((!fileManager.existant("flight",flightNum))&&(input!=1));
             }
+            //if the given flight exists then ask for the seat number 
             if(fileManager.existant("flight",flightNum)){
                 cout<<"Please specify your seat number";
                 cin>>flightSeat;
             }
         }
+        //add the passenger to the database
         string str="passenger,"+passport+","+name+","+to_string(age)+","+nationality+","+flightNum+","+flightSeat+",";
         fileManager.write(str);
     }
@@ -88,8 +94,9 @@ Passenger::~Passenger(){}
 
 //the passengers only get options for general information about the airport and their flights
 void Passenger::menu(Airport airport)const{
-    Passenger passenger(airport,passport,true);
-    if(passenger.passport!=passport) return; //if an error happens while searching for the id
+    //allocate memory for temporary passenger
+    Passenger *passenger= new Passenger(airport,passport,true);
+    if(passenger->passport!=passport) return; //if an error happens while searching for the id
 
     int option;
     
@@ -111,7 +118,7 @@ void Passenger::menu(Airport airport)const{
        switch(option){
            case 1:
                 cout<<"--My Personal Data--"<<endl;
-                passenger.printData();
+                passenger->printData();
                 break;
            case 2:
                 airport.showAirportData();
@@ -120,10 +127,10 @@ void Passenger::menu(Airport airport)const{
                 airport.showFlightData(flightNum);
                 break;
            case 4:
-                passenger.changeData(airport);
+                passenger->changeData(airport);
                 break;
            case 5:
-                passenger.setMyFlightData(airport);
+                passenger->setMyFlightData(airport);
                 break;
            case 6:
                 airport.flightsData();
@@ -151,20 +158,25 @@ void Passenger::printData()const{
     cout<<"     Flight number: "<<flightNum<<endl;
     cout<<"     Booked seat: "<<flightSeat<<endl;
 }
+
 //OPTION 4: change personal data
 //calls the function changeData of the base class Person and applies the changes in the airport file
 void Passenger::changeData(Airport airport){
     FileManagement fileManager(airport.getfileName());
     Person::changeData();
+    //apply the changes to the database
     string attributes="passenger,"+passport+","+name+","+to_string(age)+","+nationality+","+flightNum+","+flightSeat+",";
     fileManager.modify(attributes,fileManager.lineOfObject(airport,"passenger",passport));
 }
+
 //Option 5: Change Flight Data
 void Passenger::setMyFlightData(Airport airport){
     FileManagement fileManager(airport.getfileName());
+    //read the flightNum
     cout<<"Current flight number: "<<flightNum<<endl;
     cout<<"New Flight ID (if you don't want to change it please write it again): ";
     cin>>flightNum;
+    //if the new flightNum does not exist in the database
     if(!fileManager.existant("flight",flightNum)){
         do{
             cout<<"Sorry there's no such flight in our database. Do you want to:"<<endl
@@ -184,12 +196,13 @@ void Passenger::setMyFlightData(Airport airport){
         }while(!fileManager.existant("flight",flightNum));
     }
     
+    //if the flightNum is different from 0 then read the flightSeat
     if(flightNum!="0"){
         cout<<"Current seat: "<<flightSeat<<endl;
         cout<<"New seat (if you don't want to change it please write it again): ";
         cin>>flightSeat;
     }
-
+    //apply the changes to the database
     string attributes="passenger,"+passport+","+name+","+to_string(age)+","+nationality+","+flightNum+","+flightSeat+",";
     fileManager.modify(attributes,fileManager.lineOfObject(airport,"passenger",passport));
 }
