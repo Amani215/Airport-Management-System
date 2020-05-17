@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "Person.h"
+#include "fileManagement.h"
 
 using namespace std;
  
@@ -12,31 +13,36 @@ using namespace std;
 Person::Person(Airport airport,string passport, bool existantPerson){
     this->passport=passport;
     if (existantPerson){
+        FileManagement fileManager(airport.getfileName());
         //open file for reading
         ifstream file;
-        try{
-            file.open(airport.getfileName());
-        }
+        try{file.open(airport.getfileName());}
         catch(...){
-            cout<<"Could not open file."<<endl;
+            cout<<"Could not open file!"<<endl;
+            throw exception();
         }
         //search for person with id
         string str;
         while (getline(file,str)){
-            if(airport.getAttributeFromLine(str,1)==passport){
-                name=airport.getAttributeFromLine(str,2);
-                age=stoi(airport.getAttributeFromLine(str,3));
-                nationality=airport.getAttributeFromLine(str,4);
+            if(fileManager.getAttributeFromLine(str,1)==passport){
+                name=fileManager.getAttributeFromLine(str,2);
+                age=stoi(fileManager.getAttributeFromLine(str,3));
+                nationality=fileManager.getAttributeFromLine(str,4);
             }
         }
     }
     else{
-        cout<<"Please give your full name (without spaces): ";
-        cin>>name;//add error handling for space
-        cout<<"Please give your age: ";
-        cin>>age;//add error handlin for characters
-        cout<<"Please specify your nationality: ";
-        cin>>nationality;//add error handlin for space
+        try{
+            cout<<"Please give your full name (without spaces): ";
+            cin>>name;
+            cout<<"Please give your age: ";
+            cin>>age;
+            cout<<"Please specify your nationality: ";
+            cin>>nationality;
+        }catch(...){
+            cout<<"There was an error"<<endl;
+            throw exception();
+        }
     }
 }
 

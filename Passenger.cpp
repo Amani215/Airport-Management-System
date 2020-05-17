@@ -16,27 +16,27 @@ Passenger::Passenger(Airport airport,string passport, bool existantPerson)
     :Person(airport,passport, existantPerson)
 {
     if(existantPerson){
+        FileManagement fileManager(airport.getfileName());
         this->passport="";
         //open file
         ifstream file;
-        try{
-            file.open(airport.getfileName());
-        }
+        try{ file.open(airport.getfileName());}
         catch(...){
-            cout<<"there was an error";
+            cout<<"Could not open file!"<<endl;
+            throw exception();
         }
 
         //search for id and assign the attributes
         string str;
         while (getline(file,str))
         {
-            if((airport.typeOfObjectInLine(str)=="passenger")&&(airport.getAttributeFromLine(str,1)==passport)){
+            if((fileManager.typeOfObjectInLine(str)=="passenger")&&(fileManager.getAttributeFromLine(str,1)==passport)){
                 this->passport=airport.getAttributeFromLine(str,1);
-                name=airport.getAttributeFromLine(str,2);
-                age=stoi(airport.getAttributeFromLine(str,3));
-                nationality=airport.getAttributeFromLine(str,4);
-                flightNum=airport.getAttributeFromLine(str,5);
-                flightSeat=airport.getAttributeFromLine(str,6);
+                name=fileManager.getAttributeFromLine(str,2);
+                age=stoi(fileManager.getAttributeFromLine(str,3));
+                nationality=fileManager.getAttributeFromLine(str,4);
+                flightNum=fileManager.getAttributeFromLine(str,5);
+                flightSeat=fileManager.getAttributeFromLine(str,6);
                 break;
             }   
         }
@@ -46,13 +46,14 @@ Passenger::Passenger(Airport airport,string passport, bool existantPerson)
         file.close();
     }
     else{
+        FileManagement fileManager(airport.getfileName());
         cout<<"If you have a flight please enter the flight number (if not please press 0)"<<endl;
         cin>>flightNum;
         if(flightNum=="0"){
             flightSeat="0";
         }
         else{
-            if(!airport.existantFlight(flightNum)){
+            if(!fileManager.existant("flight",flightNum)){
                 do{
                     int input;
                     cout<<endl<<"There's no such flight in the database. Do you want to:"<<endl
@@ -68,16 +69,15 @@ Passenger::Passenger(Airport airport,string passport, bool existantPerson)
                         cout<<"Flight Number: ";
                         cin>>flightNum;
                     }
-                }while(!airport.existantFlight(flightNum));
+                }while(!fileManager.existant("flight",flightNum));
             }
-            if(airport.existantFlight(flightNum)){
+            if(fileManager.existant("flight",flightNum)){
                 cout<<"Please specify your seat number";
                 cin>>flightSeat;
             }
         }
-        FileManagement file(airport.getfileName());
         string str="passenger,"+passport+","+name+","+to_string(age)+","+nationality+","+flightNum+","+flightSeat;
-        file.write(str);
+        fileManager.write(str);
     }
 }
  
@@ -156,10 +156,11 @@ void Passenger::printData()const{
 
 //Option 5: Change Flight Data
 void Passenger::setMyFlightData(Airport airport){//*******************************************
+    FileManagement fileManager(airport.getfileName());
     cout<<"Current flight number: "<<flightNum<<endl;
     cout<<"New Flight ID (if you don't want to change it please write it again): ";
     cin>>flightNum;
-    if(!airport.existantFlight(flightNum)){
+    if(!fileManager.existant("flight",flightNum)){
         do{
             cout<<"Sorry there's no such flight in our database. Do you want to:"<<endl
                 <<" 1. Set the Flight to 0 and proceed"<<endl
@@ -175,7 +176,7 @@ void Passenger::setMyFlightData(Airport airport){//*****************************
                 cout<<"New Flight: ";
                 cin>>flightNum;
             }
-        }while(!airport.existantFlight(flightNum));
+        }while(!fileManager.existant("flight",flightNum));
     }
     
     if(flightNum!="0"){
@@ -185,21 +186,5 @@ void Passenger::setMyFlightData(Airport airport){//*****************************
     }
 
     string attributes="passenger,"+passport+","+name+","+to_string(age)+","+nationality+","+flightNum+","+flightSeat;
-    ifstream file;
-    string str;
-    try{file.open(airport.getfileName());}
-    catch(...){
-        cout<<"Could not open file!"<<endl;
-        throw exception();
-    }
-    int line=-1;
-    while(getline(file,str)){
-        line++;
-        if((airport.typeOfObjectInLine(str)=="flight")&&(airport.getAttributeFromLine(str,1)==flightNum)){
-            break;
-        }
-    }
-    file.close();
-    FileManagement newFile(airport.getfileName());
-    newFile.modify(attributes,line);
+    fileManager.modify(attributes,fileManager.lineOfObject(airport,"passenger",passport));
 }
