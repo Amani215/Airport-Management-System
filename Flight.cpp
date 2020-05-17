@@ -92,7 +92,7 @@ void Flight::changeFlightData(Airport airport){
     //add the changes to the file
     string attributes="flight,"+flightNum+","+destination+","+timeOfTakingOff+","+to_string(price)+","+airlineCompany+","+to_string(numberOfSeats)+","+pilotPassport+",";
     FileManagement fileManager(airport.getfileName());
-    fileManager.modify(attributes,fileManager.lineOfObject(airport,"flight",flightNum));
+    fileManager.modify(attributes,fileManager.lineOfObject("flight",flightNum));
 
     cout<<endl<<"Changes are done!"<<endl;
 }

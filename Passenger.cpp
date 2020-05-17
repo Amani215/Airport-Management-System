@@ -166,7 +166,7 @@ void Passenger::changeData(Airport airport){
     Person::changeData();
     //apply the changes to the database
     string attributes="passenger,"+passport+","+name+","+to_string(age)+","+nationality+","+flightNum+","+flightSeat+",";
-    fileManager.modify(attributes,fileManager.lineOfObject(airport,"passenger",passport));
+    fileManager.modify(attributes,fileManager.lineOfObject("passenger",passport));
 }
 
 //Option 5: Change Flight Data
@@ -204,5 +204,5 @@ void Passenger::setMyFlightData(Airport airport){
     }
     //apply the changes to the database
     string attributes="passenger,"+passport+","+name+","+to_string(age)+","+nationality+","+flightNum+","+flightSeat+",";
-    fileManager.modify(attributes,fileManager.lineOfObject(airport,"passenger",passport));
+    fileManager.modify(attributes,fileManager.lineOfObject("passenger",passport));
 }

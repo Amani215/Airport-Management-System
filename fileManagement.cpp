@@ -60,10 +60,10 @@ void FileManagement::modify(string line,int lineNumber){
 //FUNCTIONS THAT DO NOT MODIFY THE FILE
 
 //returns the number of the line where the object of type "typeOfObject" and ID "idOfObject"
-int FileManagement::lineOfObject(Airport airport, string typeOfObject,string idOfObject) const{
-    //open the airport file
+int FileManagement::lineOfObject(string typeOfObject,string idOfObject) const{
+    //open the file
     ifstream file;
-    try{file.open(airport.getfileName());}
+    try{file.open(fileName);}
     catch(...){
         cout<<"Could not open file!"<<endl;
         throw exception();

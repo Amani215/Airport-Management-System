@@ -23,7 +23,7 @@ public:
     //FUNCTIONS THAT DO NOT MODIFY THE FILE
 
     //returns the line where the specified object is in the file (it should be existant)
-    int lineOfObject(Airport airport, string typeOfObject,string idOfObject) const;
+    int lineOfObject(string typeOfObject,string idOfObject) const;
     //returns the type of the object in the line
     string typeOfObjectInLine(string str)const;
     //returns the type of the object in the line

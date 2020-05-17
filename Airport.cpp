@@ -53,13 +53,14 @@ Airport::Airport(){
 //FUNCTIONS FOR SHOWING DATA
 //*********************************************
 
-//Prints all the General Data of the Airport (name, location, passengersNum, employeesNum and flightsData)
+//Prints all the General Data of the Airport (name, location, passengersNum, employeesNum and flightsNum)
 void Airport::showAirportData() const{
     FileManagement fileManager(fileName);
     cout<<"--"<<airportName<<" Airport General Data--"<<endl;
     cout<<"Location: "<<location<<endl;
     cout<<"Number of passengers now: "<< fileManager.numberOf("passenger")<<endl;
     cout<<"Number of employees now: "<<fileManager.numberOf("employee")<<endl;
+    cout<<"Number of registered flights now: "<<fileManager.numberOf("flight")<<endl;
 }
 
 //Prints the password

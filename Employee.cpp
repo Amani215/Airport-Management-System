@@ -149,7 +149,7 @@ void Employee::changeData(Airport airport){
      setSalary();
      //set the changes in the airport file
      string attributes="employee,"+passport+","+name+","+to_string(age)+","+nationality+","+to_string(salary)+",";
-     fileManager.modify(attributes,fileManager.lineOfObject(airport,"employee",passport));
+     fileManager.modify(attributes,fileManager.lineOfObject("employee",passport));
 }
 
 //change the salary
