@@ -54,7 +54,7 @@ int FileManagement::lineOfObject(Airport airport, string typeOfObject,string idO
     int counter=-1;
     while(getline(file,str)){
         counter++;
-        if((airport.typeOfObjectInLine(str)==typeOfObject)&&(airport.getAttributeFromLine(str,1)==idOfObject)){
+        if((typeOfObjectInLine(str)==typeOfObject)&&(getAttributeFromLine(str,1)==idOfObject)){
             break;
         }
     }

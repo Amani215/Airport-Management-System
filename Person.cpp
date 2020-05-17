@@ -28,21 +28,17 @@ Person::Person(Airport airport,string passport, bool existantPerson){
                 name=fileManager.getAttributeFromLine(str,2);
                 age=stoi(fileManager.getAttributeFromLine(str,3));
                 nationality=fileManager.getAttributeFromLine(str,4);
+                break;
             }
         }
     }
     else{
-        try{
-            cout<<"Please give your full name (without spaces): ";
-            cin>>name;
-            cout<<"Please give your age: ";
-            cin>>age;
-            cout<<"Please specify your nationality: ";
-            cin>>nationality;
-        }catch(...){
-            cout<<"There was an error"<<endl;
-            throw exception();
-        }
+        cout<<"Please give your full name (without spaces): ";
+        cin>>name;
+        cout<<"Please give your age: ";
+        cin>>age;
+        cout<<"Please specify your nationality (without spaces): ";
+        cin>>nationality;
     }
 }
 

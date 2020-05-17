@@ -23,6 +23,8 @@ class Passenger:public Person{
     void menu(Airport airport)const;   
     //prints the data of the Passenger
     virtual void printData()const override;
+    //calls the function changeData of the base class Person and applies the changes in the airport file
+    void changeData(Airport airport);
     //Change the flight data of the passenger (does not change the actual flight data)
     void setMyFlightData(Airport airport);
 };

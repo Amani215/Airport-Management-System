@@ -25,7 +25,7 @@ Airport::Airport(){
     fileName=airportName+"-"+location+".txt";
 
     FileManagement fileManager(fileName);
-    if(!fileManager.fileExists()) fileManager.write("password,"+password);
+    if(!fileManager.fileExists()) fileManager.write("password,"+password+",");
 }
 
 
@@ -58,6 +58,10 @@ void Airport::showAirportDataPersonnel() const{
 void Airport::showPassword()const{ cout<<"Password: "<<password<<endl; }
 //Shows a flight according to the given flight number
 void Airport::showFlightData(string flightNum) const{
+    if(flightNum=="0"){
+        cout<<"You do not have a registered flight yet."<<endl;
+        return;
+    }
     FileManagement fileManager(fileName);
     bool found=false;
 
@@ -82,6 +86,10 @@ void Airport::showFlightData(string flightNum) const{
 //prints the data of each flight registered in the airport
 void Airport::flightsData() const{
     FileManagement fileManager(fileName);
+    if(fileManager.numberOf("flight")==0){
+        cout<<"     Sorry, there are no flights for the moment."<<endl;
+        return;
+    }
     string str;
     //open file for reading
     ifstream file;
@@ -108,7 +116,7 @@ void Airport::setPassword(){
     cin>>password;
     //Change it in the file
     FileManagement file(fileName);
-    file.modify("password,"+password,0);
+    file.modify("password,"+password+",",0);
 
 }
 //Change the name of the airport

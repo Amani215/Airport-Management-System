@@ -44,7 +44,7 @@ Employee::Employee(Airport airport,string passport, bool existantPerson)
      else{
           salary=300000;
           FileManagement file(airport.getfileName());
-          string str="employee,"+passport+","+name+","+to_string(age)+","+nationality+","+to_string(salary);
+          string str="employee,"+passport+","+name+","+to_string(age)+","+nationality+","+to_string(salary)+",";
           file.write(str);
      }
 }
@@ -136,7 +136,7 @@ void Employee::changeData(Airport airport){
      FileManagement fileManager(airport.getfileName());
      Person::changeData(); 
      setSalary();
-     string attributes="employee,"+passport+","+name+","+to_string(age)+","+nationality+","+to_string(salary);
+     string attributes="employee,"+passport+","+name+","+to_string(age)+","+nationality+","+to_string(salary)+",";
      fileManager.modify(attributes,fileManager.lineOfObject(airport,"employee",passport));
 }
 //change the salary

@@ -2,6 +2,7 @@
 #include "Airport.h"
 #include "Employee.h"
 #include "Passenger.h"
+#include "fileManagement.h"
 
 using namespace std;
 
@@ -9,6 +10,7 @@ int main()
 {
     cout<<"* WELCOME TO THE AIRPORT MANAGEMENT SYSTEM *"<<endl<<endl;
     Airport airport;
+    FileManagement fileManager(airport.getfileName());
     string passport="";
     
     int nature;
@@ -23,11 +25,11 @@ int main()
     cin>>passport;
 
     if(nature==1){
-        Passenger user(airport,passport,airport.existantPassenger(passport));
+        Passenger user(airport,passport,fileManager.existant("passenger",passport));
         user.menu(airport);
     }
     else if(nature==2){ 
-        Employee user(airport,passport,airport.existantEmployee(passport));
+        Employee user(airport,passport,fileManager.existant("employee",passport));
         user.menu(airport);
     }
     else
